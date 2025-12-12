@@ -5,10 +5,6 @@ import Subset from './Subset';
 import { useClick } from '@/shared/hooks/useAudio';
 import { cardBorderStyles } from '@/shared/lib/styles';
 import { ChevronUp } from 'lucide-react';
-import { MousePointer } from 'lucide-react';
-import { kana } from '@/features/Kana/data/kana';
-import useKanaStore from '@/features/Kana/store/useKanaStore';
-import { ActionButton } from '@/shared/components/ui/ActionButton';
 
 const STORAGE_KEY = 'kana-hidden-subsets';
 
@@ -79,8 +75,6 @@ const saveToSessionStorage = (hiddenSubsets: string[]) => {
 const KanaCards = () => {
   const { playClick } = useClick();
 
-  const addKanaGroupIndices = useKanaStore(state => state.addKanaGroupIndices);
-
   const [hiddenSubsets, setHiddenSubsets] = useState<string[]>(getInitialState);
 
   const toggleVisibility = (name: string) => {
@@ -121,28 +115,6 @@ const KanaCards = () => {
                 cardBorderStyles
               )}
             >
-              {group.name === 'Hiragana ひらがな' && (
-                <div className="flex flex-row gap-2 w-full">
-                  <ActionButton
-                    onClick={e => {
-                      e.currentTarget.blur();
-                      playClick();
-                      const indices = kana
-                        .map((k, i) => ({ k, i }))
-                        .filter(
-                          ({ k }) => !k.groupName.startsWith('challenge.')
-                        )
-                        .map(({ i }) => i);
-                      addKanaGroupIndices(indices);
-                    }}
-                    className="px-2 py-3"
-                  >
-                    <MousePointer />
-                    Select All Kana
-                  </ActionButton>
-                </div>
-              )}
-
               {/* Group Header */}
               <legend
                 className="group text-2xl hover:cursor-pointer flex flex-row items-center gap-1"

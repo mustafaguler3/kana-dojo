@@ -9,7 +9,7 @@ import {
   Keyboard,
   Play,
   ArrowLeft,
-  CheckCircle2,
+  CheckCircle2
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useClick } from '@/shared/hooks/useAudio';
@@ -28,7 +28,7 @@ const GameModes = ({
   isOpen,
   onClose,
   currentDojo,
-  mode = 'train',
+  mode = 'train'
 }: GameModesProps) => {
   const { playClick } = useClick();
   const router = useRouter();
@@ -38,7 +38,7 @@ const GameModes = ({
       useShallow(state => ({
         selectedGameModeKana: state.selectedGameModeKana,
         setSelectedGameModeKana: state.setSelectedGameModeKana,
-        kanaGroupIndices: state.kanaGroupIndices,
+        kanaGroupIndices: state.kanaGroupIndices
       }))
     );
 
@@ -47,7 +47,7 @@ const GameModes = ({
       useShallow(state => ({
         selectedGameModeKanji: state.selectedGameModeKanji,
         setSelectedGameModeKanji: state.setSelectedGameModeKanji,
-        selectedKanjiSets: state.selectedKanjiSets,
+        selectedKanjiSets: state.selectedKanjiSets
       }))
     );
 
@@ -56,26 +56,44 @@ const GameModes = ({
       useShallow(state => ({
         selectedGameModeVocab: state.selectedGameModeVocab,
         setSelectedGameModeVocab: state.setSelectedGameModeVocab,
-        selectedVocabSets: state.selectedVocabSets,
+        selectedVocabSets: state.selectedVocabSets
       }))
     );
 
   // Convert kana indices to display names
   const { kanaGroupNamesFull, kanaGroupNamesCompact } = useMemo(() => {
+    const selected = new Set(kanaGroupIndices);
+    const nonChallengeIndices = kana
+      .map((k, i) => ({ k, i }))
+      .filter(({ k }) => !k.groupName.startsWith('challenge.'))
+      .map(({ i }) => i);
+    const allNonChallengeSelected = nonChallengeIndices.every(i =>
+      selected.has(i)
+    );
+
     const full: string[] = [];
     const compact: string[] = [];
+
+    if (allNonChallengeSelected) {
+      full.push('all kana');
+      compact.push('all kana');
+    }
 
     kanaGroupIndices.forEach(i => {
       const group = kana[i];
       if (!group) {
         const fallback = `Group ${i + 1}`;
-        full.push(fallback);
-        compact.push(fallback);
+        if (!allNonChallengeSelected) {
+          full.push(fallback);
+          compact.push(fallback);
+        }
         return;
       }
 
       const firstKana = group.kana[0];
       const isChallenge = group.groupName.startsWith('challenge.');
+
+      if (!isChallenge && allNonChallengeSelected) return;
 
       full.push(
         isChallenge ? `${firstKana}-group (challenge)` : `${firstKana}-group`
@@ -134,14 +152,14 @@ const GameModes = ({
       id: 'Pick',
       title: 'Pick',
       description: 'Pick the correct answer from multiple options',
-      icon: MousePointerClick,
+      icon: MousePointerClick
     },
     {
       id: 'Type',
       title: 'Type',
       description: 'Type the correct answer',
-      icon: Keyboard,
-    },
+      icon: Keyboard
+    }
   ];
 
   const dojoLabel =
@@ -159,10 +177,7 @@ const GameModes = ({
         <div className="max-w-lg w-full space-y-4">
           {/* Header */}
           <div className="text-center space-y-3">
-            <Play
-              size={56}
-              className="mx-auto text-[var(--main-color)]"
-            />
+            <Play size={56} className="mx-auto text-[var(--main-color)]" />
             <h1 className="text-2xl font-bold text-[var(--secondary-color)]">
               {dojoLabel} {mode === 'blitz' ? 'Blitz' : 'Training'}
             </h1>
@@ -327,7 +342,7 @@ function SelectedLevelsCard({
   kanaGroupNamesCompact,
   kanaGroupNamesFull,
   selectedKanjiSets,
-  selectedVocabSets,
+  selectedVocabSets
 }: {
   currentDojo: string;
   kanaGroupNamesCompact: string[];

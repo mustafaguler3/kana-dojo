@@ -8,7 +8,7 @@ import type { KanaCharacter } from '@/features/Kana/lib/generateKanaQuestions';
 import { flattenKanaGroups } from '@/features/Kana/lib/flattenKanaGroup';
 import { kana } from '@/features/Kana/data/kana';
 import TimedChallenge, {
-  type TimedChallengeConfig,
+  type TimedChallengeConfig
 } from '@/shared/components/TimedChallenge';
 
 export default function TimedChallengeKana() {
@@ -23,20 +23,37 @@ export default function TimedChallengeKana() {
   );
 
   // Convert indices to group names for display (e.g., "か-group")
-  const selectedKanaGroups = React.useMemo(
-    () =>
-      kanaGroupIndices.map(i => {
-        const group = kana[i];
-        if (!group) return `Group ${i + 1}`;
-        // Use the first kana character of the group
-        const firstKana = group.kana[0];
-        const isChallenge = group.groupName.startsWith('challenge.');
-        return isChallenge
-          ? `${firstKana}-group (challenge)`
-          : `${firstKana}-group`;
-      }),
-    [kanaGroupIndices]
-  );
+  const selectedKanaGroups = React.useMemo(() => {
+    const selected = new Set(kanaGroupIndices);
+    const nonChallengeIndices = kana
+      .map((k, i) => ({ k, i }))
+      .filter(({ k }) => !k.groupName.startsWith('challenge.'))
+      .map(({ i }) => i);
+    const allNonChallengeSelected = nonChallengeIndices.every(i =>
+      selected.has(i)
+    );
+
+    const labels: string[] = [];
+    if (allNonChallengeSelected) labels.push('all kana');
+
+    kanaGroupIndices.forEach(i => {
+      const group = kana[i];
+      if (!group) {
+        if (!allNonChallengeSelected) labels.push(`Group ${i + 1}`);
+        return;
+      }
+
+      const isChallenge = group.groupName.startsWith('challenge.');
+      if (!isChallenge && allNonChallengeSelected) return;
+
+      const firstKana = group.kana[0];
+      labels.push(
+        isChallenge ? `${firstKana}-group (challenge)` : `${firstKana}-group`
+      );
+    });
+
+    return labels;
+  }, [kanaGroupIndices]);
 
   const {
     timedCorrectAnswers,
@@ -45,7 +62,7 @@ export default function TimedChallengeKana() {
     timedBestStreak,
     incrementTimedCorrectAnswers,
     incrementTimedWrongAnswers,
-    resetTimedStats,
+    resetTimedStats
   } = useStatsStore();
 
   const config: TimedChallengeConfig<KanaCharacter> = {
@@ -104,8 +121,8 @@ export default function TimedChallengeKana() {
       bestStreak: timedBestStreak,
       incrementCorrect: incrementTimedCorrectAnswers,
       incrementWrong: incrementTimedWrongAnswers,
-      reset: resetTimedStats,
-    },
+      reset: resetTimedStats
+    }
   };
 
   return <TimedChallenge config={config} />;

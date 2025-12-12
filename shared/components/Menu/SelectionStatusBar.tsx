@@ -25,10 +25,8 @@ const SelectionStatusBar = () => {
   const isKanji = contentType === 'kanji';
 
   // Kana store
-  const kanaGroupIndices = useKanaStore((state) => state.kanaGroupIndices);
-  const addKanaGroupIndices = useKanaStore(
-    (state) => state.addKanaGroupIndices
-  );
+  const kanaGroupIndices = useKanaStore(state => state.kanaGroupIndices);
+  const addKanaGroupIndices = useKanaStore(state => state.addKanaGroupIndices);
 
   // Kanji store
   const { selectedKanjiSets, clearKanjiObjs, clearKanjiSets } = useKanjiStore();
@@ -36,40 +34,53 @@ const SelectionStatusBar = () => {
   // Vocab store
   const { selectedVocabSets, clearVocabObjs, clearVocabSets } = useVocabStore();
 
-  // Convert kana indices to display names (e.g., "か-group", "さ-group (challenge)")
   const { kanaGroupNamesFull, kanaGroupNamesCompact } = useMemo(() => {
+    const selected = new Set(kanaGroupIndices);
+    const nonChallengeIndices = kana
+      .map((k, i) => ({ k, i }))
+      .filter(({ k }) => !k.groupName.startsWith('challenge.'))
+      .map(({ i }) => i);
+    const allNonChallengeSelected = nonChallengeIndices.every(i =>
+      selected.has(i)
+    );
+
     const full: string[] = [];
     const compact: string[] = [];
 
-    kanaGroupIndices.forEach((i) => {
+    if (allNonChallengeSelected) {
+      full.push('all kana');
+      compact.push('all kana');
+    }
+
+    kanaGroupIndices.forEach(i => {
       const group = kana[i];
       if (!group) {
         const fallback = `Group ${i + 1}`;
-        full.push(fallback);
-        compact.push(fallback);
+        if (!allNonChallengeSelected) {
+          full.push(fallback);
+          compact.push(fallback);
+        }
         return;
       }
 
-      const firstKana = group.kana[0];
       const isChallenge = group.groupName.startsWith('challenge.');
+      if (!isChallenge && allNonChallengeSelected) return;
 
+      const firstKana = group.kana[0];
       full.push(
         isChallenge ? `${firstKana}-group (challenge)` : `${firstKana}-group`
       );
       compact.push(firstKana);
     });
 
-    return {
-      kanaGroupNamesFull: full,
-      kanaGroupNamesCompact: compact,
-    };
+    return { kanaGroupNamesFull: full, kanaGroupNamesCompact: compact };
   }, [kanaGroupIndices]);
 
   const hasSelection = isKana
     ? kanaGroupIndices.length > 0
     : isKanji
-    ? selectedKanjiSets.length > 0
-    : selectedVocabSets.length > 0;
+      ? selectedKanjiSets.length > 0
+      : selectedVocabSets.length > 0;
 
   const handleClear = () => {
     playClick();
@@ -92,7 +103,7 @@ const SelectionStatusBar = () => {
   }>({
     top: 0,
     left: 0,
-    width: '100%',
+    width: '100%'
   });
 
   useEffect(() => {
@@ -167,11 +178,11 @@ const SelectionStatusBar = () => {
       ? kanaGroupNamesFull.join(', ')
       : 'None'
     : sortedSets.length > 0
-    ? formatLevelsAsRanges(sortedSets)
-        .split(', ')
-        .map((range) => `Level ${range}`)
-        .join(', ')
-    : 'None';
+      ? formatLevelsAsRanges(sortedSets)
+          .split(', ')
+          .map(range => `Level ${range}`)
+          .join(', ')
+      : 'None';
 
   // Label text
   const selectionLabel = isKana ? 'Selected Groups:' : 'Selected Levels:';
@@ -193,7 +204,7 @@ const SelectionStatusBar = () => {
             width:
               typeof layout.width === 'number'
                 ? `${layout.width}px`
-                : layout.width,
+                : layout.width
           }}
           className={clsx(
             'fixed z-40',
