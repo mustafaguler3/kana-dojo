@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { CircleCheck, CircleX } from 'lucide-react';
 import { Random } from 'random-js';
 import { IKanjiObj } from '@/features/Kanji/store/useKanjiStore';
@@ -59,10 +59,14 @@ const KanjiPickGame = ({ selectedKanjiObjs, isHidden }: KanjiPickGameProps) => {
     return selected;
   });
 
-  // Find the correct object - always by kanjiChar since correctChar stores the kanji
-  const correctKanjiObj = selectedKanjiObjs.find(
-    obj => obj.kanjiChar === correctChar
+  // Create Map for O(1) lookups instead of O(n) find() calls
+  const kanjiObjMap = useMemo(
+    () => new Map(selectedKanjiObjs.map(obj => [obj.kanjiChar, obj])),
+    [selectedKanjiObjs]
   );
+
+  // Find the correct object - O(1) lookup
+  const correctKanjiObj = kanjiObjMap.get(correctChar);
 
   const [currentKanjiObj, setCurrentKanjiObj] = useState<IKanjiObj>(
     correctKanjiObj as IKanjiObj
@@ -272,7 +276,7 @@ const KanjiPickGame = ({ selectedKanjiObjs, isHidden }: KanjiPickGameProps) => {
                 ref={elem => {
                   buttonRefs.current[i] = elem;
                 }}
-                key={option + i}
+                key={`${correctChar}-${option}-${i}`}
                 type="button"
                 disabled={wrongSelectedAnswers.includes(option)}
                 className={clsx(
@@ -298,12 +302,8 @@ const KanjiPickGame = ({ selectedKanjiObjs, isHidden }: KanjiPickGameProps) => {
                     text={option}
                     reading={
                       isReverse
-                        ? selectedKanjiObjs.find(
-                            obj => obj.kanjiChar === option
-                          )?.onyomi[0] ||
-                          selectedKanjiObjs.find(
-                            obj => obj.kanjiChar === option
-                          )?.kunyomi[0]
+                        ? kanjiObjMap.get(option)?.onyomi[0] ||
+                          kanjiObjMap.get(option)?.kunyomi[0]
                         : undefined
                     }
                   />

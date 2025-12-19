@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { CircleCheck, CircleX, CircleArrowRight } from 'lucide-react';
 import clsx from 'clsx';
-import * as wanakana from 'wanakana';
+import { toHiragana } from 'wanakana';
 import { IVocabObj } from '@/features/Vocabulary/store/useVocabStore';
 import { useClick, useCorrect, useError } from '@/shared/hooks/useAudio';
 import GameIntel from '@/shared/components/Game/GameIntel';
@@ -142,8 +142,8 @@ const VocabInputGame = ({
       // Reading quiz: accept both romaji and kana input
       // Convert romaji input to hiragana for comparison
       const targetReading = typeof targetChar === 'string' ? targetChar : '';
-      const inputAsHiragana = wanakana.toHiragana(input);
-      const targetAsHiragana = wanakana.toHiragana(targetReading);
+      const inputAsHiragana = toHiragana(input);
+      const targetAsHiragana = toHiragana(targetReading);
       return inputAsHiragana === targetAsHiragana || input === targetReading;
     }
   };

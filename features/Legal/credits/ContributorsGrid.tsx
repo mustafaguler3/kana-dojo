@@ -24,6 +24,8 @@ export default function ContributorsGrid({
             width={48}
             height={48}
             className="rounded-full mb-2"
+            loading="lazy"
+            sizes="48px"
             unoptimized
           />
           <span className="text-sm truncate max-w-full">{c.login}</span>

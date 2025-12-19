@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import themeSets from '@/features/Preferences/data/themes';
 import { useClick } from '@/shared/hooks/useAudio';
 import clsx from 'clsx';
@@ -121,7 +121,7 @@ const loadDecorationFonts = async (
 
 type AnimState = 'idle' | 'exploding' | 'hidden' | 'fading-in';
 
-// Component to render a single kanji character with random styles
+// Component to render a single kanji character with random styles - memoized to prevent unnecessary re-renders
 const KanjiCharacter = ({
   char,
   forceShow = false,
@@ -223,6 +223,9 @@ const KanjiCharacter = ({
   );
 };
 
+const MemoizedKanjiCharacter = memo(KanjiCharacter);
+MemoizedKanjiCharacter.displayName = 'KanjiCharacter';
+
 const Decorations = ({
   expandDecorations,
   forceShow = false,
@@ -297,7 +300,7 @@ const Decorations = ({
           )}
         >
           {kanjiList.map((char, index) => (
-            <KanjiCharacter
+            <MemoizedKanjiCharacter
               char={char}
               key={index}
               forceShow={forceShow}

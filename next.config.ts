@@ -30,7 +30,8 @@ const nextConfig: NextConfig = {
       '@radix-ui/react-select',
       'zustand',
       'clsx',
-      'class-variance-authority'
+      'class-variance-authority',
+      'wanakana'
     ],
     // Faster builds
     webpackBuildWorker: true,

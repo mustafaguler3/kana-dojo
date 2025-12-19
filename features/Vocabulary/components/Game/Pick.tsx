@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { CircleCheck, CircleX } from 'lucide-react';
 import { Random } from 'random-js';
 import { IVocabObj } from '@/features/Vocabulary/store/useVocabStore';
@@ -69,8 +69,14 @@ const VocabPickGame = ({ selectedWordObjs, isHidden }: VocabPickGameProps) => {
     return selected;
   });
 
-  // Find the correct object - always by word since correctChar stores the word
-  const correctWordObj = selectedWordObjs.find(obj => obj.word === correctChar);
+  // Create Map for O(1) lookups instead of O(n) find() calls
+  const wordObjMap = useMemo(
+    () => new Map(selectedWordObjs.map(obj => [obj.word, obj])),
+    [selectedWordObjs]
+  );
+
+  // Find the correct object - O(1) lookup
+  const correctWordObj = wordObjMap.get(correctChar);
 
   const [currentWordObj, setCurrentWordObj] = useState<IVocabObj>(
     correctWordObj as IVocabObj
@@ -226,7 +232,7 @@ const VocabPickGame = ({ selectedWordObjs, isHidden }: VocabPickGameProps) => {
     setCorrectChar(newChar);
 
     // Get the actual word for the new character to check if it contains kanji
-    const newWordObj = selectedWordObjs.find(obj => obj.word === newChar);
+    const newWordObj = wordObjMap.get(newChar);
     const wordToCheck = newWordObj?.word ?? '';
 
     // Only toggle to reading quiz if the word contains kanji
@@ -310,7 +316,7 @@ const VocabPickGame = ({ selectedWordObjs, isHidden }: VocabPickGameProps) => {
                 ref={elem => {
                   buttonRefs.current[i] = elem;
                 }}
-                key={option + i}
+                key={`${correctChar}-${option}-${i}`}
                 type="button"
                 disabled={wrongSelectedAnswers.includes(option)}
                 className={clsx(
@@ -336,8 +342,7 @@ const VocabPickGame = ({ selectedWordObjs, isHidden }: VocabPickGameProps) => {
                       text={option}
                       reading={
                         isReverse
-                          ? selectedWordObjs.find(obj => obj.word === option)
-                              ?.reading
+                          ? wordObjMap.get(option)?.reading
                           : undefined
                       }
                     />
