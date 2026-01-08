@@ -12,7 +12,11 @@ export type Category =
   | 'kanji'
   | 'vocabulary'
   | 'grammar'
-  | 'culture';
+  | 'culture'
+  | 'comparison'
+  | 'tutorial'
+  | 'resources'
+  | 'jlpt';
 
 /**
  * Content difficulty levels
@@ -99,7 +103,11 @@ export const VALID_CATEGORIES: Category[] = [
   'kanji',
   'vocabulary',
   'grammar',
-  'culture'
+  'culture',
+  'comparison',
+  'tutorial',
+  'resources',
+  'jlpt'
 ];
 
 /**
