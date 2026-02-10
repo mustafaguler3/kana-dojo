@@ -50,6 +50,28 @@ interface ThemeGroup {
 // Glass / Premium helpers
 // ============================================================================
 
+const PREMIUM_THEME_VARIABLES = {
+  backgroundColor: 'oklch(0% 0 0 / 0.95)',
+  cardColor: 'oklch(20% 0.01 255 / 0.85)',
+  borderColor: 'oklch(30% 0.01 255 / 0.85)',
+  mainColor: 'oklch(100% 0 0)',
+  secondaryColor: 'oklch(85% 0 0)',
+} as const;
+
+const PREMIUM_THEME_ACCENTS = {
+  mainColorAccent: generateAccentColor(PREMIUM_THEME_VARIABLES.mainColor),
+  secondaryColorAccent: generateAccentColor(
+    PREMIUM_THEME_VARIABLES.secondaryColor,
+  ),
+} as const;
+
+function getPremiumThemeVariables() {
+  return {
+    ...PREMIUM_THEME_VARIABLES,
+    ...PREMIUM_THEME_ACCENTS,
+  };
+}
+
 /**
  * Handles special cases for transparency (Glass themes).
  * Returns the card color with specific opacity for glass effects.
@@ -59,7 +81,7 @@ export function getModifiedCardColor(
   cardColor: string,
 ): string {
   if (isPremiumThemeId(themeId)) {
-    return 'oklch(20% 0.01 255 / 0.85)'; // Dark semi-transparent
+    return PREMIUM_THEME_VARIABLES.cardColor;
   }
   return cardColor;
 }
@@ -72,8 +94,7 @@ export function getModifiedBorderColor(
   borderColor: string,
 ): string {
   if (isPremiumThemeId(themeId)) {
-    // return 'oklch(100% 0 0 / 0.12)'; // Light semi-transparent
-    return 'oklch(30% 0.01 255 / 0.85)'; // Dark semi-transparent
+    return PREMIUM_THEME_VARIABLES.borderColor;
   }
   return borderColor;
 }
@@ -348,22 +369,30 @@ export function applyTheme(themeId: string) {
 
   const root = document.documentElement;
 
-  root.style.setProperty('--background-color', theme.backgroundColor);
+  const isPremium = isPremiumThemeId(resolvedThemeId);
+  const effectiveTheme = isPremium
+    ? getPremiumThemeVariables()
+    : {
+        backgroundColor: theme.backgroundColor,
+        cardColor: getModifiedCardColor(theme.id, theme.cardColor),
+        borderColor: getModifiedBorderColor(theme.id, theme.borderColor),
+        mainColor: theme.mainColor,
+        mainColorAccent: theme.mainColorAccent,
+        secondaryColor: theme.secondaryColor,
+        secondaryColorAccent: theme.secondaryColorAccent,
+      };
 
-  // Handle modified colors for glass themes
-  const cardColor = getModifiedCardColor(theme.id, theme.cardColor);
-  const borderColor = getModifiedBorderColor(theme.id, theme.borderColor);
+  root.style.setProperty('--background-color', effectiveTheme.backgroundColor);
+  root.style.setProperty('--card-color', effectiveTheme.cardColor);
+  root.style.setProperty('--border-color', effectiveTheme.borderColor);
+  root.style.setProperty('--main-color', effectiveTheme.mainColor);
+  root.style.setProperty('--main-color-accent', effectiveTheme.mainColorAccent);
 
-  root.style.setProperty('--card-color', cardColor);
-  root.style.setProperty('--border-color', borderColor);
-  root.style.setProperty('--main-color', theme.mainColor);
-  root.style.setProperty('--main-color-accent', theme.mainColorAccent);
-
-  if (theme.secondaryColor) {
-    root.style.setProperty('--secondary-color', theme.secondaryColor);
+  if (effectiveTheme.secondaryColor) {
+    root.style.setProperty('--secondary-color', effectiveTheme.secondaryColor);
     root.style.setProperty(
       '--secondary-color-accent',
-      theme.secondaryColorAccent,
+      effectiveTheme.secondaryColorAccent,
     );
   }
 
@@ -398,21 +427,30 @@ export function applyTheme(themeId: string) {
 // Apply a theme object directly (live preview theme)
 export function applyThemeObject(theme: Theme) {
   const root = document.documentElement;
-  root.style.setProperty('--background-color', theme.backgroundColor);
 
-  // Handle modified colors for glass themes
-  const cardColor = getModifiedCardColor(theme.id, theme.cardColor);
-  const borderColor = getModifiedBorderColor(theme.id, theme.borderColor);
+  const isPremium = isPremiumThemeId(theme.id);
+  const effectiveTheme = isPremium
+    ? getPremiumThemeVariables()
+    : {
+        backgroundColor: theme.backgroundColor,
+        cardColor: getModifiedCardColor(theme.id, theme.cardColor),
+        borderColor: getModifiedBorderColor(theme.id, theme.borderColor),
+        mainColor: theme.mainColor,
+        mainColorAccent: theme.mainColorAccent,
+        secondaryColor: theme.secondaryColor,
+        secondaryColorAccent: theme.secondaryColorAccent,
+      };
 
-  root.style.setProperty('--card-color', cardColor);
-  root.style.setProperty('--border-color', borderColor);
-  root.style.setProperty('--main-color', theme.mainColor);
-  root.style.setProperty('--main-color-accent', theme.mainColorAccent);
-  if (theme.secondaryColor) {
-    root.style.setProperty('--secondary-color', theme.secondaryColor);
+  root.style.setProperty('--background-color', effectiveTheme.backgroundColor);
+  root.style.setProperty('--card-color', effectiveTheme.cardColor);
+  root.style.setProperty('--border-color', effectiveTheme.borderColor);
+  root.style.setProperty('--main-color', effectiveTheme.mainColor);
+  root.style.setProperty('--main-color-accent', effectiveTheme.mainColorAccent);
+  if (effectiveTheme.secondaryColor) {
+    root.style.setProperty('--secondary-color', effectiveTheme.secondaryColor);
     root.style.setProperty(
       '--secondary-color-accent',
-      theme.secondaryColorAccent,
+      effectiveTheme.secondaryColorAccent,
     );
   }
 }
