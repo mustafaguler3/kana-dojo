@@ -116,7 +116,7 @@
   {
     "id": 20,
     "fact": "The word 'karoshi' (éŽåŠ´æ­») meaning 'death from overwork' is so prevalent that it's recognized as a legal cause of death with compensated claims.",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
