@@ -58,7 +58,7 @@ export default function StreakProgress() {
       <div className='flex justify-center'>
         <div
           className={cn(
-            'rounded-(--streak-tabs-outer-radius) border-4 border-(--border-color) p-(--streak-tabs-halo-gap)',
+            'rounded-(--streak-tabs-outer-radius) p-(--streak-tabs-halo-gap)',
           )}
           style={
             {
@@ -119,7 +119,7 @@ export default function StreakProgress() {
       <StreakGrid visits={visits} period={period} />
 
       {/* Instructions */}
-      <div className='rounded-2xl border border-(--border-color) bg-(--card-color) p-4'>
+      <div className='rounded-2xl bg-(--card-color) p-4'>
         <h3 className='pb-2 font-semibold text-(--main-color)'>
           How Streak Tracking Works
         </h3>

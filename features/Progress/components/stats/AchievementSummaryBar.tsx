@@ -197,4 +197,3 @@ export function getAchievementDisplayValues(summary: AchievementSummary): {
     progressPercent: `${progressPercent.toFixed(0)}%`,
   };
 }
-
