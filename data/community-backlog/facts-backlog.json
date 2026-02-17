@@ -303,18 +303,18 @@
     "id": 51,
     "fact": "There's a Japanese practice of 'honne and tatemae' - your true feelings (honne) versus your public facade (tatemae) - both are considered valid.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 52,
     "fact": "Japan's Nakizumo festival has sumo wrestlers compete to make babies cry first - crying is believed to ward off evil spirits.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 53,
     "fact": "The Japanese word 'shibui' (æ¸‹ã„) describes a subtle, unobtrusive beauty that grows on you over time - the opposite of flashy.",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
