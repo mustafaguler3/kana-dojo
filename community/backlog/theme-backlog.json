@@ -797,7 +797,9 @@
     "mainColor": "oklch(72.0% 0.145 345.0 / 1)",
     "secondaryColor": "oklch(75.0% 0.125 155.0 / 1)",
     "issued": true,
-    "completed": false
+    "completed": true,
+    "completedBy": "RiteshJha912",
+    "completedPR": 5239
   },
   {
     "id": "umbrella-rain",
