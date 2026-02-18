@@ -303,18 +303,18 @@
     "id": 51,
     "text": "\"ã€œã¨ã„ã†ã‚ˆã‚Š\" means \"rather than\" or \"more like\".",
     "completed": false,
-    "issued": false
+    "issued": true
   },
   {
     "id": 52,
     "text": "\"ã€œãŠã‹ã’ã§\" expresses gratitude for a cause, \"thanks to\".",
     "completed": false,
-    "issued": false
+    "issued": true
   },
   {
     "id": 53,
     "text": "\"ã€œã›ã„ã§\" indicates a negative cause, \"because of\".",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {

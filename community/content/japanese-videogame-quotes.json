@@ -222,5 +222,19 @@
   "english": "The real battle starts now.",
   "game": "Final Fantasy VII",
   "character": "Sephiroth"
-  }
+  },
+  {
+  "japanese": "??????????",
+  "romaji": "Mirai wa kono te de tsukamu.",
+  "english": "I will seize the future with my own hands.",
+  "game": "Final Fantasy VII",
+  "character": "Sephiroth"
+} ,
+  {
+  "japanese": "????",
+  "romaji": "Ikuzo!",
+  "english": "Let's go!",
+  "game": "Final Fantasy VII",
+  "character": "Sephiroth"
+}
 ]
