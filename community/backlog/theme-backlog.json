@@ -895,7 +895,9 @@
     "mainColor": "oklch(82.0% 0.155 180.0 / 1)",
     "secondaryColor": "oklch(72.0% 0.135 165.0 / 1)",
     "issued": true,
-    "completed": false
+    "completed": true,
+    "completedBy": "sharlenek",
+    "completedPR": 5272
   },
   {
     "id": "shaved-ice",
