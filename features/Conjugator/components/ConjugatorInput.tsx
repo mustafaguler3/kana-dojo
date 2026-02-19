@@ -81,7 +81,7 @@ export default function ConjugatorInput({
 
   return (
     <div
-      className='group relative flex w-full flex-col gap-16 transition-all duration-1000'
+      className='group relative flex w-full flex-col gap-8 transition-colors duration-500'
       role='search'
       aria-label='Japanese verb conjugation input'
     >
@@ -97,8 +97,8 @@ export default function ConjugatorInput({
             disabled={isDisabled}
             placeholder='e.g. 食べる, 行く, する...'
             className={cn(
-              'h-32 w-full bg-transparent p-0 text-6xl font-black text-(--main-color) placeholder:text-(--secondary-color)/10 sm:h-48 sm:text-8xl lg:text-9xl',
-              'font-japanese tracking-tighter transition-all duration-700 focus:outline-none',
+              'h-16 w-full bg-transparent p-0 text-3xl font-bold text-(--main-color) placeholder:text-(--secondary-color)/10 sm:h-20 sm:text-4xl',
+              'font-japanese tracking-tight focus:outline-none',
               error ? 'text-red-500/80' : 'focus:text-(--main-color)',
               isDisabled && 'cursor-not-allowed opacity-20',
             )}
@@ -140,12 +140,12 @@ export default function ConjugatorInput({
         {/* Floating Label - Dynamic position */}
         <p
           className={cn(
-            'text-[10px] font-black tracking-[0.6em] text-(--secondary-color) uppercase opacity-30 transition-all duration-700',
-            'group-focus-within:text-(--main-color) group-focus-within:opacity-100',
+            'text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase',
+            'group-focus-within:text-(--main-color)',
           )}
           id='verb-input-hint'
         >
-          {isLoading ? 'Processing Request' : 'Morphology Engine Focal Point'}
+          {isLoading ? 'Processing...' : 'Enter a Japanese verb'}
         </p>
 
         {/* Error Message - Pure Typography */}
@@ -171,17 +171,17 @@ export default function ConjugatorInput({
           borderRadius='full'
           borderBottomThickness={0}
           className={cn(
-            'h-16 w-full text-xs font-black tracking-[0.3em] uppercase sm:h-20 sm:w-auto sm:px-16',
-            'shadow-(--main-color)/10 shadow-2xl transition-all hover:scale-110 active:scale-95',
-            'disabled:opacity-20 disabled:grayscale disabled:hover:scale-100',
+            'h-14 w-full text-xs font-bold tracking-widest uppercase sm:h-16 sm:w-auto sm:px-12',
+            'shadow-(--main-color)/10 shadow-xl transition-colors',
+            'disabled:opacity-20 disabled:grayscale',
           )}
-          aria-label={isLoading ? 'Conjugating...' : 'Initiate Conjugation'}
+          aria-label={isLoading ? 'Conjugating...' : 'Conjugate'}
           aria-busy={isLoading}
         >
           {isLoading ? (
-            <div className='flex items-center gap-4'>
-              <Loader2 className='h-6 w-6 animate-spin' />
-              <span>Synthesizing</span>
+            <div className='flex items-center gap-3'>
+              <Loader2 className='h-5 w-5 animate-spin' />
+              <span>Conjugating</span>
             </div>
           ) : (
             'Conjugate'

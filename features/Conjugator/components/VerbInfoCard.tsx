@@ -28,93 +28,84 @@ export default function VerbInfoCard({ verb }: VerbInfoCardProps) {
 
   return (
     <div
-      className='flex flex-col gap-20 transition-all duration-1000'
+      className='flex flex-col gap-6'
       role='region'
       aria-label={`Verb information for ${verb.dictionaryForm}`}
     >
-      {/* Main info header - Pure Typography */}
-      <div className='flex flex-col gap-16'>
-        <div className='flex flex-col gap-12 sm:flex-row sm:items-end sm:justify-between'>
-          <div className='flex flex-col gap-6'>
-            <div className='flex items-center gap-6'>
-              <span className='text-[10px] font-black tracking-[0.6em] text-(--secondary-color) uppercase opacity-30'>
-                Linguistic Entry
+      {/* Main info header */}
+      <div className='flex flex-col gap-8'>
+        <div className='flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex items-center gap-3'>
+              <span className='text-[10px] font-bold tracking-widest text-(--secondary-color) uppercase opacity-50'>
+                Dictionary Entry
               </span>
-              <div className='h-[1px] w-16 bg-(--main-color)/20' />
+              <div className='h-[1px] w-8 bg-(--main-color)/10' />
             </div>
 
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col'>
               <h3
-                className='font-japanese text-8xl font-black tracking-tighter text-(--main-color) sm:text-9xl lg:text-[10rem] xl:text-[12rem]'
+                className='font-japanese text-3xl font-bold text-(--main-color) sm:text-4xl'
                 lang='ja'
               >
                 {verb.dictionaryForm}
               </h3>
-              <div className='flex items-center gap-8 text-2xl font-medium text-(--secondary-color) opacity-50 sm:text-4xl'>
+              <div className='flex items-center gap-4 text-base font-medium text-(--secondary-color) opacity-60'>
                 <span className='font-japanese' lang='ja'>
                   {verb.reading}
                 </span>
-                <span className='text-(--main-color)/20'>/</span>
+                <span className='opacity-20'>/</span>
                 <span className='italic'>{verb.romaji}</span>
               </div>
             </div>
           </div>
 
-          <div className='flex flex-col items-end gap-3 pb-4 text-right'>
-            <span className='text-[10px] font-black tracking-[0.4em] text-(--main-color) uppercase opacity-20'>
-              Verification
+          <div className='flex flex-col items-end gap-1 pb-2 text-right'>
+            <span className='text-[10px] font-bold tracking-widest text-(--main-color) uppercase opacity-30'>
+              Status
             </span>
-            <span className='text-3xl font-black tracking-tighter text-(--main-color)'>
-              Precision Synthesized
+            <span className='text-xl font-bold tracking-tight text-(--main-color)/80'>
+              Verified Analysis
             </span>
           </div>
         </div>
 
-        {/* Informational Catalog - Zero Boxes, Pure Alignment */}
         <div
-          className='flex flex-wrap items-center gap-x-20 gap-y-12'
+          className='flex flex-wrap items-center gap-8'
           role='group'
           aria-label='Verb classification details'
         >
-          {/* Verb Type */}
-          <div className='flex flex-col gap-2'>
-            <span className='text-[9px] font-black tracking-[0.5em] text-(--secondary-color) uppercase opacity-30'>
-              Grammar Class
+          <div className='flex flex-col gap-1'>
+            <span className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+              Type
             </span>
-            <span
-              className={cn(
-                'text-3xl font-black tracking-tighter',
-                verbTypeInfo.colorClass,
-              )}
-            >
+            <span className={cn('text-xl font-bold', verbTypeInfo.colorClass)}>
               {verbTypeInfo.label}
             </span>
           </div>
 
-          <div className='hidden h-12 w-[1px] bg-(--border-color)/30 sm:block' />
+          <div className='hidden h-8 w-[1px] bg-(--border-color)/10 sm:block' />
 
-          {/* Stem */}
-          <div className='flex flex-col gap-2'>
-            <span className='text-[9px] font-black tracking-[0.5em] text-(--secondary-color) uppercase opacity-30'>
-              Root Segment
+          <div className='flex flex-col gap-1'>
+            <span className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+              Stem
             </span>
             <span
-              className='font-japanese text-4xl font-black tracking-tighter text-(--main-color)'
+              className='font-japanese text-xl font-bold text-(--main-color)'
               lang='ja'
             >
               {verb.stem || '—'}
             </span>
           </div>
 
-          <div className='hidden h-12 w-[1px] bg-(--border-color)/30 sm:block' />
+          <div className='hidden h-8 w-[1px] bg-(--border-color)/10 sm:block' />
 
-          {/* Ending */}
-          <div className='flex flex-col gap-2'>
-            <span className='text-[9px] font-black tracking-[0.5em] text-(--secondary-color) uppercase opacity-30'>
-              Terminator
+          <div className='flex flex-col gap-1'>
+            <span className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+              Ending
             </span>
             <span
-              className='font-japanese text-4xl font-black tracking-tighter text-(--main-color)'
+              className='font-japanese text-xl font-bold text-(--main-color)'
               lang='ja'
             >
               {verb.ending || '—'}
@@ -141,66 +132,28 @@ export default function VerbInfoCard({ verb }: VerbInfoCardProps) {
         )}
       </div>
 
-      {/* Rules Disclosure - Integrated divider style */}
-      <section className='border-y border-(--border-color)/10 py-4'>
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className='group flex w-full items-center justify-between text-left transition-all'
-          aria-expanded={isExpanded}
-        >
-          <div className='flex items-center gap-4'>
-            <div className='h-1.5 w-1.5 rounded-full bg-(--main-color) transition-all group-hover:scale-150' />
-            <span className='text-[10px] font-black tracking-[0.4em] text-(--secondary-color) uppercase opacity-30 transition-opacity group-hover:opacity-100'>
-              Transformation Rules Manual
-            </span>
+      {/* Conjugation Rules */}
+      <section className='border-t border-(--border-color)/10 pt-6'>
+        <div className='flex flex-col gap-6'>
+          <div className='flex flex-col gap-2'>
+            <h4 className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+              Transformation Rules
+            </h4>
+            <p className='text-base font-medium text-(--secondary-color)/70'>
+              {verbTypeInfo.description}
+            </p>
           </div>
-          <div className='flex items-center gap-4 text-[9px] font-black tracking-widest text-(--main-color) uppercase opacity-0 transition-opacity group-hover:opacity-100'>
-            <span>{isExpanded ? 'Collapse logic' : 'Reveal logic'}</span>
-            <ChevronDown
-              className={cn(
-                'h-4 w-4 transition-transform duration-500',
-                isExpanded && 'rotate-180',
-              )}
-            />
-          </div>
-        </button>
 
-        <div
-          id='verb-explanation'
-          className={cn(
-            'grid transition-all duration-700 ease-in-out',
-            isExpanded
-              ? 'mt-12 grid-rows-[1fr] opacity-100'
-              : 'grid-rows-[0fr] opacity-0',
-          )}
-        >
-          <div className='overflow-hidden'>
-            <div className='flex flex-col gap-12 pb-8'>
-              <div className='flex max-w-2xl flex-col gap-4'>
-                <h4 className='text-xs font-black tracking-widest text-(--main-color) uppercase opacity-50'>
-                  Overview
-                </h4>
-                <p className='text-xl leading-relaxed font-medium text-(--secondary-color) opacity-60'>
-                  {verbTypeInfo.description}
-                </p>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+            {verbTypeInfo.rules.map((rule, idx) => (
+              <div
+                key={idx}
+                className='flex gap-3 text-sm font-medium text-(--secondary-color)/60'
+              >
+                <span className='text-(--main-color)/20'>{idx + 1}.</span>
+                <span>{rule}</span>
               </div>
-
-              <div className='grid grid-cols-1 gap-8 sm:grid-cols-2'>
-                {verbTypeInfo.rules.map((rule, idx) => (
-                  <div
-                    key={idx}
-                    className='flex gap-6 border-l border-(--main-color)/10 pl-6'
-                  >
-                    <span className='text-[10px] font-black text-(--main-color) opacity-20'>
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <span className='text-sm leading-relaxed font-medium text-(--secondary-color) opacity-70'>
-                      {rule}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>

@@ -17,16 +17,6 @@ interface ConjugatorPageProps {
 
 /**
  * ConjugatorPage - Main page component for the Japanese Verb Conjugator
- *
- * Features:
- * - Composes all conjugator components
- * - Responsive layout (mobile-first)
- * - ARIA labels and keyboard navigation
- * - URL parameter handling for shareable links
- * - URL state synchronization
- * - aria-live regions for dynamic content updates
- *
- * Requirements: 5.1, 5.4, 5.5, 5.6, 10.1, 10.2, 10.3, 12.1, 12.2, 12.3
  */
 export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
   const searchParams = useSearchParams();
@@ -42,27 +32,20 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
     result,
     isLoading,
     error,
-    expandedCategories,
     history,
     setInputText,
     conjugate,
-    toggleCategory,
-    expandAllCategories,
-    collapseAllCategories,
     copyForm,
-    copyAllForms,
     deleteFromHistory,
     clearHistory,
     restoreFromHistory,
     initFromUrlParams,
   } = useConjugatorStore();
 
-  // Handle URL parameters for shareable conjugations (Requirements: 12.2)
+  // Handle URL parameters for shareable conjugations
   useEffect(() => {
     if (initializedFromUrl.current) return;
-
     const verb = searchParams.get('verb') || searchParams.get('v');
-
     if (verb) {
       const hasParams = initFromUrlParams({ verb });
       if (hasParams) {
@@ -71,14 +54,11 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
     }
   }, [searchParams, initFromUrlParams]);
 
-  // Update URL when verb is conjugated (Requirements: 12.1)
+  // Update URL when verb is conjugated
   useEffect(() => {
     if (!result) return;
-
     const currentVerb = searchParams.get('verb') || searchParams.get('v');
     const newVerb = result.verb.dictionaryForm;
-
-    // Only update URL if the verb has changed
     if (currentVerb !== newVerb) {
       const newUrl = `${pathname}?verb=${encodeURIComponent(newVerb)}`;
       router.replace(newUrl, { scroll: false });
@@ -92,103 +72,74 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
     }
   }, [inputText, isLoading, conjugate]);
 
-  // Handle share button click (Requirements: 12.3)
+  // Handle share button click
   const handleShare = useCallback(async () => {
     if (!result) return;
-
     const shareUrl = `${window.location.origin}${pathname}?verb=${encodeURIComponent(result.verb.dictionaryForm)}`;
-
     try {
       await navigator.clipboard.writeText(shareUrl);
       setShareButtonState('copied');
       setTimeout(() => setShareButtonState('idle'), 2000);
     } catch {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: `${result.verb.dictionaryForm} Conjugation - KanaDojo`,
-            text: `Check out the conjugation of ${result.verb.dictionaryForm} (${result.verb.romaji})`,
-            url: shareUrl,
-          });
-        } catch {
-          setShareButtonState('error');
-          setTimeout(() => setShareButtonState('idle'), 2000);
-        }
-      } else {
-        setShareButtonState('error');
-        setTimeout(() => setShareButtonState('idle'), 2000);
-      }
+      setShareButtonState('error');
+      setTimeout(() => setShareButtonState('idle'), 2000);
     }
   }, [result, pathname]);
 
   return (
     <div
-      className='mx-auto flex w-full max-w-7xl flex-col px-4 py-8 sm:px-10 sm:py-20'
+      className='mx-auto flex w-full max-w-7xl flex-col px-4 py-8 sm:px-10 sm:py-12'
       role='main'
       aria-label='Japanese verb conjugator'
     >
-      {/* Immersive Header Section - Pure Alignment */}
-      <header className='relative mb-32 flex flex-col items-start'>
-        <div className='flex flex-col gap-10'>
-          <div className='flex items-center gap-6' aria-hidden='true'>
-            <Languages className='h-10 w-10 text-(--main-color) opacity-20' />
-            <div className='h-[1px] w-12 bg-(--main-color)/20' />
-            <span className='text-[10px] font-black tracking-[0.6em] text-(--secondary-color) uppercase opacity-30'>
-              The Grand Lexicon
-            </span>
+      <header className='relative mb-8 flex flex-col items-start'>
+        <div className='flex flex-col gap-4'>
+          <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+            <Languages className='h-3 w-3' />
+            <span>Japanese Conjugator</span>
           </div>
 
-          <h1 className='flex flex-col text-6xl font-black tracking-tighter text-(--main-color) sm:text-8xl lg:text-[10rem]'>
-            <span>Japanese Verb</span>
-            <span className='font-serif text-(--secondary-color) italic opacity-80 sm:-mt-8'>
-              Conjugator
-            </span>
-          </h1>
-
-          <p className='max-w-xl text-xl leading-relaxed font-medium text-(--secondary-color) opacity-40 sm:text-3xl'>
-            Precision morphological synthesis. Explore every transformation with
-            surgical clarity.
-          </p>
+          <div className='flex flex-col gap-1'>
+            <h1 className='text-3xl font-black tracking-tight text-(--main-color) sm:text-4xl'>
+              Japanese Verb Conjugator
+            </h1>
+            <p className='max-w-xl text-base font-medium text-(--secondary-color)/70'>
+              Enter any Japanese verb to get all possible conjugation forms.
+            </p>
+          </div>
         </div>
 
-        {/* Sync Result Action - Pure Typography */}
         {result && (
-          <div className='animate-in fade-in slide-in-from-left-8 mt-16 duration-1000'>
+          <div className='mt-6'>
             <button
               onClick={handleShare}
               className={cn(
-                'group flex items-center gap-6 transition-all duration-500 hover:translate-x-4',
+                'flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase transition-colors',
                 shareButtonState === 'copied'
-                  ? 'text-green-500'
+                  ? 'text-green-600'
                   : 'text-(--main-color)',
               )}
+              aria-label='Share results'
             >
-              <div className='h-1.5 w-1.5 rounded-full bg-current' />
-              <div className='flex items-center gap-4'>
-                <span className='text-xs font-black tracking-[0.4em] uppercase'>
-                  {shareButtonState === 'copied'
-                    ? 'Link Archived'
-                    : 'Synchronize Result'}
-                </span>
-                <Share2
-                  className={cn(
-                    'h-4 w-4 opacity-40 transition-all group-hover:opacity-100',
-                    shareButtonState === 'copied' && 'hidden',
-                  )}
-                />
-                {shareButtonState === 'copied' && <Check className='h-4 w-4' />}
-              </div>
+              <div className='h-1 w-1 rounded-full bg-current' />
+              <span>
+                {shareButtonState === 'copied' ? 'Link Copied' : 'Share Result'}
+              </span>
+              <Share2
+                className={cn(
+                  'h-3 w-3 opacity-40',
+                  shareButtonState === 'copied' && 'hidden',
+                )}
+              />
+              {shareButtonState === 'copied' && <Check className='h-3 w-3' />}
             </button>
           </div>
         )}
       </header>
 
-      {/* Unified Canvas Layout */}
-      <div className='relative flex flex-col lg:flex-row lg:items-start lg:gap-16'>
-        {/* Main Interaction Canvas */}
-        <div className='flex flex-1 flex-col gap-24'>
-          {/* Persistent Core Input Field - Zero Box, Pure Signal */}
-          <section className='w-full' aria-label='Verb Search'>
+      <div className='relative flex flex-col lg:flex-row lg:items-start lg:gap-12'>
+        <main className='flex flex-1 flex-col gap-8'>
+          <section className='w-full'>
             <ConjugatorInput
               value={inputText}
               onChange={setInputText}
@@ -198,46 +149,26 @@ export default function ConjugatorPage({ locale = 'en' }: ConjugatorPageProps) {
             />
           </section>
 
-          {/* Result Flow Area */}
-          <section className='min-h-[600px]' aria-label='Conjugation Results'>
+          <section className='min-h-[300px]'>
             <ConjugationResults
               result={result}
               isLoading={isLoading}
-              expandedCategories={expandedCategories}
-              onToggleCategory={toggleCategory}
-              onExpandAll={expandAllCategories}
-              onCollapseAll={collapseAllCategories}
               onCopyForm={copyForm}
-              onCopyAll={copyAllForms}
             />
           </section>
-        </div>
+        </main>
 
-        {/* Architectural Sidebar - History as a timeline record */}
         <aside
-          className='shrink-0 pt-20 lg:sticky lg:top-24 lg:w-[320px] lg:pt-0'
+          className='shrink-0 pt-12 lg:sticky lg:top-12 lg:w-[280px] lg:pt-0'
           aria-label='Conjugation history'
         >
-          <div className='relative'>
-            {/* Background architectural line */}
-            <div className='absolute top-0 -left-8 hidden h-full w-[1px] bg-gradient-to-b from-(--border-color)/50 via-(--border-color)/20 to-transparent lg:block' />
-
-            <ConjugationHistory
-              entries={history}
-              onSelect={restoreFromHistory}
-              onDelete={deleteFromHistory}
-              onClearAll={clearHistory}
-            />
-          </div>
+          <ConjugationHistory
+            entries={history}
+            onSelect={restoreFromHistory}
+            onDelete={deleteFromHistory}
+            onClearAll={clearHistory}
+          />
         </aside>
-      </div>
-
-      {/* Keyboard shortcuts info (screen reader only) */}
-      <div className='sr-only' aria-live='polite'>
-        <p>
-          Keyboard shortcuts: Press Enter in the input field to conjugate. Press
-          Escape to clear the input. Use Tab to navigate between elements.
-        </p>
       </div>
     </div>
   );

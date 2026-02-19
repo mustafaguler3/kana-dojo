@@ -73,100 +73,42 @@ export default function ConjugationCategory({
       role='listitem'
     >
       {/* Category header - Pure Alignment */}
-      <button
-        onClick={onToggle}
-        className={cn(
-          'flex items-center justify-between py-12 transition-all duration-500',
-          'cursor-pointer focus:outline-none',
-        )}
-        aria-expanded={isExpanded}
-        aria-controls={`category-${category}`}
-        aria-label={`${categoryInfo.name} (${categoryInfo.nameJa}), ${forms.length} forms. ${isExpanded ? 'Collapse' : 'Expand'}`}
+      <div
+        className='flex items-center justify-between border-b border-(--border-color)/10 py-4'
+        aria-label={`${categoryInfo.name} (${categoryInfo.nameJa}), ${forms.length} forms.`}
       >
-        <div className='flex items-center gap-10'>
-          {/* Subtle colored marker */}
+        <div className='flex items-center gap-4'>
           <div
-            className={cn(
-              'h-1.5 w-1.5 rounded-full transition-all duration-1000',
-              isExpanded
-                ? 'scale-[3] shadow-lg'
-                : 'opacity-40 group-hover:scale-[2]',
-              categoryInfo.colorClass, // Changed from bgClass to colorClass
-            )}
-            style={{ backgroundColor: categoryInfo.color }} // We'll need to update the info function
+            className={cn('h-1.5 w-1.5 rounded-full', categoryInfo.colorClass)}
+            style={{ backgroundColor: categoryInfo.color }}
             aria-hidden='true'
           />
 
-          <div className='flex flex-col text-left'>
-            <h4
-              className={cn(
-                'text-5xl font-black tracking-tighter transition-all duration-700',
-                isExpanded
-                  ? 'text-(--main-color)'
-                  : 'text-(--secondary-color) opacity-20 group-hover:opacity-100',
-              )}
-            >
+          <div className='flex items-center gap-4'>
+            <h4 className='text-xl font-bold tracking-tight text-(--main-color)'>
               {categoryInfo.name}
             </h4>
-            <div className='mt-2 flex items-center gap-6'>
-              <span className='font-japanese text-sm font-bold tracking-widest text-(--main-color) opacity-20'>
-                {categoryInfo.nameJa}
-              </span>
-              <span className='text-[10px] font-black tracking-[0.4em] text-(--secondary-color) uppercase opacity-10'>
-                {forms.length} Entries
-              </span>
-            </div>
+            <span className='font-japanese text-xs font-bold text-(--main-color) opacity-20'>
+              {categoryInfo.nameJa}
+            </span>
           </div>
         </div>
+      </div>
 
-        <div className='flex items-center gap-12'>
-          <div
-            className={cn(
-              'hidden h-[1px] w-64 bg-gradient-to-r from-transparent via-(--border-color)/20 to-transparent transition-all duration-1000 lg:block',
-              isExpanded ? 'opacity-0' : 'opacity-100',
-            )}
-          />
-          <div
-            className={cn(
-              'transition-all duration-700',
-              isExpanded
-                ? 'rotate-180 text-(--main-color)'
-                : 'text-(--secondary-color) opacity-20 group-hover:opacity-100',
-            )}
-          >
-            <ChevronDown className='h-6 w-6' aria-hidden='true' />
-          </div>
-        </div>
-      </button>
-
-      {/* Forms list - Flowing directly on canvas */}
       <div
         id={`category-${category}`}
-        className={cn(
-          'grid transition-all duration-1000 ease-in-out',
-          isExpanded
-            ? 'grid-rows-[1fr] opacity-100'
-            : 'grid-rows-[0fr] opacity-0',
-        )}
+        className='opacity-100'
         role='region'
         aria-label={`${categoryInfo.name} conjugation forms`}
-        hidden={!isExpanded}
       >
-        <div className='overflow-hidden'>
-          <div
-            className='flex flex-col gap-0'
-            role='list'
-            aria-label={`${forms.length} ${categoryInfo.name.toLowerCase()} forms`}
-          >
-            {forms.map((form, index) => (
-              <FormRow
-                key={form.id}
-                form={form}
-                onCopy={onCopy}
-                index={index}
-              />
-            ))}
-          </div>
+        <div
+          className='flex flex-col'
+          role='list'
+          aria-label={`${forms.length} ${categoryInfo.name.toLowerCase()} forms`}
+        >
+          {forms.map((form, index) => (
+            <FormRow key={form.id} form={form} onCopy={onCopy} index={index} />
+          ))}
         </div>
       </div>
     </div>
@@ -196,18 +138,15 @@ function FormRow({
   return (
     <div
       className={cn(
-        'group flex items-center justify-between gap-8 py-10 transition-all duration-500',
-        'border-b border-(--border-color)/10 last:border-0',
-        'animate-in fade-in slide-in-from-left-8 duration-700',
+        'group flex items-center justify-between gap-4 py-3 transition-colors duration-200',
+        'border-b border-(--border-color)/5 last:border-0',
       )}
-      style={{ animationDelay: `${index * 40}ms` }}
       role='listitem'
     >
-      {/* Form info */}
-      <div className='flex min-w-0 flex-1 flex-col gap-4'>
-        <div className='flex items-baseline gap-6'>
+      <div className='flex min-w-0 flex-1 flex-col gap-1'>
+        <div className='flex items-baseline gap-3'>
           <span
-            className='font-japanese text-4xl font-black text-(--main-color) sm:text-5xl'
+            className='font-japanese text-xl font-bold text-(--main-color)'
             lang='ja'
           >
             {form.kanji}

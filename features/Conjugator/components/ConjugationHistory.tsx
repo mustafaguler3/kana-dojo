@@ -49,19 +49,15 @@ export default function ConjugationHistory({
   if (entries.length === 0) {
     return (
       <div
-        className='flex flex-col items-start gap-8 py-10 text-left'
+        className='flex flex-col items-start gap-4 py-6 text-left opacity-30'
         role='region'
         aria-label='Conjugation history'
       >
-        <div className='flex items-center gap-4'>
-          <div className='h-1.5 w-1.5 rounded-full bg-(--main-color) opacity-20' />
-          <h4 className='text-[10px] font-black tracking-[0.4em] text-(--secondary-color) uppercase opacity-30'>
-            Log: Idle
-          </h4>
-        </div>
-        <p className='text-xl leading-relaxed font-medium text-(--secondary-color) opacity-20'>
-          Transformation archive currently inactive. Begin synthesis to record
-          linguistic morphs.
+        <span className='text-[10px] font-bold tracking-widest uppercase'>
+          History Empty
+        </span>
+        <p className='text-sm font-medium'>
+          Your recent conjugations will appear here.
         </p>
       </div>
     );
@@ -76,14 +72,11 @@ export default function ConjugationHistory({
       {/* Header - Sidebar Style */}
       <div className='flex items-center justify-between'>
         <div className='flex flex-col gap-1'>
-          <div className='flex items-center gap-3'>
-            <div className='h-1.5 w-1.5 rounded-full bg-(--main-color)' />
-            <h3 className='text-xs font-black tracking-[0.4em] text-(--main-color) uppercase opacity-40'>
-              Archive Log
-            </h3>
-          </div>
-          <p className='text-[10px] font-bold text-(--secondary-color) opacity-20'>
-            {entries.length} morphs recorded
+          <h3 className='text-[10px] font-bold tracking-widest text-(--main-color) uppercase'>
+            History
+          </h3>
+          <p className='text-[10px] font-bold text-(--secondary-color)/40'>
+            {entries.length} recent entries
           </p>
         </div>
 
@@ -91,8 +84,8 @@ export default function ConjugationHistory({
         <AlertDialog open={clearDialogOpen} onOpenChange={setClearDialogOpen}>
           <AlertDialogTrigger asChild>
             <button
-              className='flex h-10 w-10 items-center justify-center rounded-full text-(--secondary-color) opacity-20 transition-all hover:bg-red-500/10 hover:text-red-500 hover:opacity-100 active:scale-90'
-              aria-label='Clear all history archive'
+              className='flex h-8 w-8 items-center justify-center rounded-full text-(--secondary-color)/40 transition-colors hover:bg-red-500/10 hover:text-red-500'
+              aria-label='Clear history'
             >
               <Trash2 className='h-4 w-4' />
             </button>
@@ -139,9 +132,8 @@ export default function ConjugationHistory({
         </AlertDialog>
       </div>
 
-      {/* History entries as a minimalist architectural list */}
       <div
-        className='flex flex-col gap-1'
+        className='flex flex-col'
         role='list'
         aria-label='Recent conjugated verbs'
       >
@@ -174,44 +166,29 @@ function HistoryRecord({
 
   return (
     <div
-      className={cn(
-        'group relative flex items-center justify-between transition-all duration-500',
-        'hover:translate-x-3',
-      )}
+      className='group flex items-center justify-between border-b border-(--border-color)/5 last:border-0'
       role='listitem'
     >
       {/* Clickable verb part */}
       <button
         onClick={() => onSelect(entry)}
-        className='flex min-w-0 flex-1 items-center gap-6 py-4 text-left focus:outline-none'
+        className='flex min-w-0 flex-1 items-center gap-4 py-4 text-left focus:outline-none'
         aria-label={`Conjugate ${entry.verb}`}
       >
-        {/* Type Dot Marker */}
         <div
-          className={cn(
-            'flex h-2 w-2 shrink-0 rounded-full transition-all duration-700 group-hover:scale-[2]',
-            typeInfo.bgClass,
-            'bg-opacity-100', // Override the bgOpacity for the dot
-          )}
-          style={{
-            backgroundColor: typeInfo.textClass.split('text-')[1].split('-')[0],
-          }} // Hacky way to get the color, better to define properly
+          className={cn('h-1.5 w-1.5 shrink-0 rounded-full', typeInfo.bgClass)}
         />
 
         <div className='flex min-w-0 flex-col'>
           <span
-            className='font-japanese truncate text-2xl font-black tracking-tighter text-(--main-color) opacity-40 transition-all duration-500 group-hover:opacity-100'
+            className='font-japanese truncate text-lg font-bold text-(--main-color) opacity-60 transition-opacity group-hover:opacity-100'
             lang='ja'
           >
             {entry.verb}
           </span>
-          <div className='mt-1 flex items-center gap-3'>
-            <span className='text-[8px] font-black tracking-widest text-(--secondary-color) uppercase opacity-20'>
+          <div className='flex items-center gap-2'>
+            <span className='text-[8px] font-bold text-(--secondary-color)/40 uppercase'>
               {typeInfo.label}
-            </span>
-            <div className='h-[1px] w-4 bg-(--border-color)/50' />
-            <span className='text-[8px] font-black tracking-widest text-(--secondary-color) uppercase opacity-20'>
-              {formatTimestamp(entry.timestamp)}
             </span>
           </div>
         </div>

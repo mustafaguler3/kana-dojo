@@ -55,85 +55,43 @@ export default function FAQ({
 
   return (
     <section
-      className={cn(
-        'mt-8 rounded-2xl',
-        'bg-(--card-color)',
-        'p-6 sm:p-8',
-      )}
+      className='mt-20 flex flex-col gap-12'
       aria-labelledby='faq-heading'
       itemScope
       itemType='https://schema.org/FAQPage'
     >
-      {/* Header */}
-      <div className='mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+      <div className='flex flex-col gap-4'>
+        <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+          <div className='h-[1px] w-4 bg-(--main-color)' />
+          <span>FAQ</span>
+        </div>
         <h2
           id='faq-heading'
-          className='text-xl font-bold text-(--main-color) sm:text-2xl'
+          className='text-2xl font-bold tracking-tight text-(--main-color)'
         >
           Frequently Asked Questions
         </h2>
-
-        {/* Expand/Collapse controls */}
-        <div className='flex gap-2' role='group' aria-label='FAQ controls'>
-          <button
-            onClick={expandAll}
-            className={cn(
-              'rounded-lg px-3 py-1.5 text-xs font-medium',
-              'text-(--secondary-color)',
-              'hover:bg-(--border-color)/50',
-              'transition-colors duration-200',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color)',
-            )}
-            aria-label='Expand all FAQ items'
-          >
-            Expand All
-          </button>
-          <button
-            onClick={collapseAll}
-            className={cn(
-              'rounded-lg px-3 py-1.5 text-xs font-medium',
-              'text-(--secondary-color)',
-              'hover:bg-(--border-color)/50',
-              'transition-colors duration-200',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color)',
-            )}
-            aria-label='Collapse all FAQ items'
-          >
-            Collapse All
-          </button>
-        </div>
       </div>
 
-      {/* FAQ Items */}
-      <div className='space-y-3' role='list' aria-label='FAQ items'>
+      <div className='flex flex-col' role='list' aria-label='FAQ items'>
         {displayedItems.map((item, index) => (
           <FAQItemComponent
             key={index}
             item={item}
             index={index}
-            isExpanded={expandedItems.has(index)}
-            onToggle={() => toggleItem(index)}
+            isExpanded={true}
+            onToggle={() => {}}
           />
         ))}
       </div>
 
-      {/* Show More/Less button */}
       {hasMoreItems && (
-        <div className='mt-6 text-center'>
+        <div className='flex justify-center py-4'>
           <button
             onClick={() => setShowAll(!showAll)}
-            className={cn(
-              'rounded-lg px-4 py-2 text-sm font-medium',
-              'text-(--main-color)',
-              'hover:bg-(--main-color)/10',
-              'transition-colors duration-200',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color)',
-            )}
-            aria-expanded={showAll}
+            className='text-[10px] font-bold tracking-widest text-(--main-color) uppercase transition-colors'
           >
-            {showAll
-              ? 'Show Less'
-              : `Show ${items.length - initialDisplayCount} More Questions`}
+            {showAll ? 'Show Fewer' : 'Show All Questions'}
           </button>
         </div>
       )}
@@ -160,65 +118,22 @@ function FAQItemComponent({
   return (
     <div
       className={cn(
-        'rounded-xl',
-        'overflow-hidden',
-        'transition-colors duration-200',
-        isExpanded && 'bg-(--background-color)',
+        'group flex flex-col transition-all duration-700',
+        'border-b border-(--border-color)/10 last:border-0',
       )}
       itemScope
       itemProp='mainEntity'
       itemType='https://schema.org/Question'
       role='listitem'
     >
-      {/* Question */}
-      <button
-        onClick={onToggle}
-        className={cn(
-          'flex w-full items-center justify-between gap-4 p-4',
-          'text-left',
-          'hover:bg-(--background-color)',
-          'transition-colors duration-200',
-          'cursor-pointer',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color) focus-visible:ring-inset',
-        )}
-        aria-expanded={isExpanded}
-        aria-controls={answerId}
-      >
-        <h3
-          className='text-sm font-medium text-(--main-color) sm:text-base'
-          itemProp='name'
-        >
-          {item.question}
-        </h3>
-        <ChevronDown
-          className={cn(
-            'h-5 w-5 shrink-0 text-(--secondary-color)',
-            'transition-transform duration-200',
-            isExpanded && 'rotate-180',
-          )}
-          aria-hidden='true'
-        />
-      </button>
-
-      {/* Answer */}
-      {isExpanded && (
-        <div
-          id={answerId}
-          className='border-t border-(--border-color) px-4 py-4'
-          itemScope
-          itemProp='acceptedAnswer'
-          itemType='https://schema.org/Answer'
-          role='region'
-          aria-label={`Answer to: ${item.question}`}
-        >
-          <p
-            className='text-sm leading-relaxed text-(--secondary-color)'
-            itemProp='text'
-          >
-            {item.answer}
-          </p>
+      <div className='flex flex-col gap-4 border-b border-(--border-color)/5 py-6 last:border-0'>
+        <div className='flex flex-col gap-2'>
+          <h3 className='text-lg font-bold text-(--main-color)'>
+            {item.question}
+          </h3>
+          <p className='text-base text-(--secondary-color)/70'>{item.answer}</p>
         </div>
-      )}
+      </div>
     </div>
   );
 }
