@@ -15,7 +15,7 @@ interface GeneratePageMetadataOptions {
 
 function joinUrl(
   baseUrl: string,
-  locale: string | undefined,
+  _locale: string | undefined,
   pathname: string,
 ) {
   const normalizedBaseUrl = baseUrl.replace(/\/$/, '');
@@ -23,16 +23,7 @@ function joinUrl(
     ? pathname
     : `/${pathname}`;
 
-  if (!locale) {
-    return `${normalizedBaseUrl}${normalizedPathname === '/' ? '' : normalizedPathname}`;
-  }
-
-  // Locale root is represented as /{locale} (no trailing slash)
-  if (normalizedPathname === '/') {
-    return `${normalizedBaseUrl}/${locale}`;
-  }
-
-  return `${normalizedBaseUrl}/${locale}${normalizedPathname}`;
+  return `${normalizedBaseUrl}${normalizedPathname === '/' ? '' : normalizedPathname}`;
 }
 
 /**
@@ -76,13 +67,6 @@ export async function generatePageMetadata(
   const ogImageUrl = `https://kanadojo.com/api/og?title=${encodeURIComponent(titleShort)}&description=${encodeURIComponent(description.slice(0, 100))}&type=${imageType}`;
 
   const canonicalUrl = joinUrl(baseUrl, locale, pathname);
-  const alternatesLanguages: Record<string, string> | undefined = locale
-    ? {
-        en: joinUrl(baseUrl, 'en', pathname),
-        es: joinUrl(baseUrl, 'es', pathname),
-      }
-    : undefined;
-
   return {
     title,
     description,
@@ -109,7 +93,6 @@ export async function generatePageMetadata(
     },
     alternates: {
       canonical: canonicalUrl,
-      languages: alternatesLanguages,
     },
   };
 }

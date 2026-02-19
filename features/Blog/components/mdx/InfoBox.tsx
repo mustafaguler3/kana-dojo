@@ -45,7 +45,7 @@ const typeStyles: Record<
 
 interface InfoBoxProps {
   /** Type of info box (tip, warning, note) */
-  type: InfoBoxType;
+  type?: InfoBoxType;
   /** Content to display inside the box */
   children: ReactNode;
   /** Optional title for the box */
@@ -64,13 +64,15 @@ interface InfoBoxProps {
  * <InfoBox type="note">This is a note for reference.</InfoBox>
  */
 export function InfoBox({ type, children, title, className }: InfoBoxProps) {
-  const styles = typeStyles[type];
+  const normalizedType: InfoBoxType =
+    type && type in typeStyles ? type : 'note';
+  const styles = typeStyles[normalizedType];
   const defaultTitle =
-    type === 'tip'
+    normalizedType === 'tip'
       ? 'Tip'
-      : type === 'warning'
+      : normalizedType === 'warning'
         ? 'Warning'
-        : type === 'success'
+        : normalizedType === 'success'
           ? 'Success'
           : 'Note';
 
@@ -78,7 +80,7 @@ export function InfoBox({ type, children, title, className }: InfoBoxProps) {
     <aside
       className={cn('my-6 rounded-lg border p-4', styles.container, className)}
       data-testid='info-box'
-      data-type={type}
+      data-type={normalizedType}
       role='note'
       aria-label={title || defaultTitle}
     >

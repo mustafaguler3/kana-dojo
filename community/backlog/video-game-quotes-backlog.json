@@ -106,7 +106,7 @@
     "english": "It's not over yet.",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -116,7 +116,7 @@
     "english": "I can't afford to lose.",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -126,7 +126,7 @@
     "english": "Let's settle this!",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -136,7 +136,7 @@
     "english": "I'll change fate.",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -146,7 +146,7 @@
     "english": "This is my answer.",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -156,7 +156,7 @@
     "english": "All we can do is believe.",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -166,7 +166,7 @@
     "english": "Are you ready?",
     "game": "Final Fantasy X",
     "character": "Tidus",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {

@@ -29,7 +29,7 @@ export function generateBlogMetadata(
   options: MetadataOptions = {},
 ): Metadata {
   const baseUrl = options.baseUrl ?? BASE_URL;
-  const canonicalUrl = `${baseUrl}/${post.locale}/academy/${post.slug}`;
+  const canonicalUrl = `${baseUrl}/academy/${post.slug}`;
 
   const metadata: Metadata = {
     title: post.title,

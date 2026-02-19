@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, Suspense } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { ArrowLeftRight, WifiOff, Languages, Sparkles } from 'lucide-react';
@@ -32,6 +32,7 @@ interface TranslatorPageProps {
 }
 
 export default function TranslatorPage({ locale = 'en' }: TranslatorPageProps) {
+  const isEs = locale === 'es';
   const searchParams = useSearchParams();
   const initializedFromUrl = useRef(false);
 
@@ -114,15 +115,71 @@ export default function TranslatorPage({ locale = 'en' }: TranslatorPageProps) {
         </div>
         <div>
           <h1 className='text-2xl font-bold text-(--main-color) sm:text-3xl'>
-            Free English to Japanese Translator
+            Free English to Japanese & Japanese to English Translator
           </h1>
           <p className='mt-1 text-sm text-(--secondary-color) sm:text-base'>
-            <strong>Translate English to Japanese</strong> or Japanese to
-            English instantly. Get accurate translations with{' '}
-            <strong>romaji pronunciation</strong> — no registration required.
-          </p>
+            <strong>Translate English to Japanese</strong> and Japanese to
+            English instantly. Get accurate results with <strong>romaji pronunciation</strong> support.</p>
         </div>
       </header>
+
+      <section
+        className={cn(
+          'rounded-xl border border-(--border-color) bg-(--card-color) p-4',
+          'grid gap-4 md:grid-cols-2',
+        )}
+        aria-label='Translator transparency details'
+      >
+        <div>
+          <h2 className='text-base font-semibold text-(--main-color)'>
+            {isEs ? 'Limites y privacidad' : 'Limits and privacy'}
+          </h2>
+          <ul className='mt-2 list-disc space-y-1 pl-5 text-sm text-(--secondary-color)'>
+            <li>
+              {isEs
+                ? 'Hasta 5,000 caracteres por solicitud.'
+                : 'Up to 5,000 characters per request.'}
+            </li>
+            <li>
+              {isEs
+                ? 'Se aplican limites de uso durante alta demanda.'
+                : 'Fair-use limits apply during high demand.'}
+            </li>
+            <li>
+              {isEs
+                ? 'El historial se guarda localmente en tu navegador.'
+                : 'History is stored locally in your browser.'}
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 className='text-base font-semibold text-(--main-color)'>
+            {isEs ? 'Ultima actualizacion y cambios' : 'Last updated and changes'}
+          </h2>
+          <p className='mt-2 text-sm text-(--secondary-color)'>
+            {isEs
+              ? 'Ultima actualizacion: 18 de febrero de 2026'
+              : 'Last updated: February 18, 2026'}
+          </p>
+          <ul className='mt-2 list-disc space-y-1 pl-5 text-sm text-(--secondary-color)'>
+            <li>
+              {isEs
+                ? 'Metadatos canonicos unificados para URLs sin prefijo.'
+                : 'Canonical metadata unified for no-prefix URLs.'}
+            </li>
+            <li>
+              {isEs
+                ? 'FAQ visible alineada con FAQPage schema.'
+                : 'Visible FAQ aligned with FAQPage schema.'}
+            </li>
+            <li>
+              {isEs
+                ? 'Nuevas paginas de intencion para busqueda de traduccion.'
+                : 'New intent pages for translator search coverage.'}
+            </li>
+          </ul>
+        </div>
+      </section>
 
       {/* Offline indicator */}
       {isOffline && (
@@ -209,3 +266,4 @@ export default function TranslatorPage({ locale = 'en' }: TranslatorPageProps) {
     </div>
   );
 }
+

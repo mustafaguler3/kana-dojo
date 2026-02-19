@@ -68,7 +68,7 @@ export function generateArticleSchema(
   const baseUrl = options.baseUrl ?? BASE_URL;
   const publisherName = options.publisherName ?? PUBLISHER_NAME;
   const publisherLogo = options.publisherLogo ?? PUBLISHER_LOGO;
-  const mainEntityOfPage = `${baseUrl}/${post.locale}/academy/${post.slug}`;
+  const mainEntityOfPage = `${baseUrl}/academy/${post.slug}`;
 
   // Calculate word count from content
   const wordCount = post.content

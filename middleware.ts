@@ -20,9 +20,15 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Extract locale from pathname (URLs have /en/ or /es/ prefixes)
-  const localeMatch = pathname.match(/^\/(en|es)/);
-  const locale = localeMatch ? localeMatch[1] : 'en';
+  // Locale prefix is disabled; derive locale from cookie, then Accept-Language.
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  const acceptLanguage = request.headers.get('accept-language') ?? '';
+  const preferredLocale = acceptLanguage.toLowerCase().startsWith('es')
+    ? 'es'
+    : 'en';
+  const locale = cookieLocale === 'es' || cookieLocale === 'en'
+    ? cookieLocale
+    : preferredLocale;
 
   // Use next-intl middleware for locale handling
   const response = intlMiddleware(request);

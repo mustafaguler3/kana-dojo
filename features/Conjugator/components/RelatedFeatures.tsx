@@ -1,161 +1,99 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
+  Keyboard,
+  Book,
   BookOpen,
-  Languages,
-  GraduationCap,
-  Library,
+  BrainCircuit,
   Sparkles,
+  Zap,
+  Layout,
+  Info,
 } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { ReactNode } from 'react';
 
-/**
- * Internal link configuration
- */
 interface InternalLink {
-  href: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
+  href: string;
+  icon: ReactNode;
+  id: string;
 }
 
-/**
- * Related features to link from the conjugator
- */
-const INTERNAL_LINKS: InternalLink[] = [
+const links: InternalLink[] = [
   {
+    id: 'kana',
+    title: 'Kana Drills',
+    description: 'Master Hiragana and Katakana through speed-based repetition.',
     href: '/kana',
-    title: 'Kana Practice',
-    description: 'Master Hiragana and Katakana with interactive training',
-    icon: <Sparkles className='h-5 w-5' />,
+    icon: <Keyboard className='h-4 w-4' />,
   },
   {
+    id: 'kanji',
+    title: 'Kanji Matrix',
+    description: 'Learn over 2,000 Jōyō Kanji with radical breakdowns.',
     href: '/kanji',
-    title: 'Kanji Learning',
-    description: 'Study Kanji characters organized by JLPT level',
-    icon: <BookOpen className='h-5 w-5' />,
+    icon: <BookOpen className='h-4 w-4' />,
   },
   {
-    href: '/vocabulary',
-    title: 'Vocabulary Training',
-    description: 'Build your Japanese vocabulary with JLPT-focused words',
-    icon: <Library className='h-5 w-5' />,
-  },
-  {
-    href: '/translate',
-    title: 'Japanese Translator',
-    description: 'Translate between English and Japanese with romaji',
-    icon: <Languages className='h-5 w-5' />,
-  },
-  {
-    href: '/academy',
-    title: 'Japanese Academy',
-    description: 'Structured lessons for comprehensive Japanese learning',
-    icon: <GraduationCap className='h-5 w-5' />,
+    id: 'gauntlet',
+    title: 'Precision Gauntlet',
+    description: 'Test your accuracy in high-stakes linguistic challenges.',
+    href: '/gauntlet',
+    icon: <Zap className='h-4 w-4' />,
   },
 ];
 
-interface RelatedFeaturesProps {
-  /** Optional locale for links */
-  locale?: string;
-  /** Optional custom links */
-  links?: InternalLink[];
-}
+export default function RelatedFeatures() {
+  const pathname = usePathname();
 
-/**
- * RelatedFeatures - Internal links to other KanaDojo features
- *
- * This component provides SEO-friendly internal links to related features,
- * helping with site navigation and search engine crawling.
- *
- * Requirements: 13.8
- */
-export default function RelatedFeatures({
-  locale,
-  links = INTERNAL_LINKS,
-}: RelatedFeaturesProps) {
   const getLocalizedHref = (href: string) => {
-    if (locale) {
-      return `/${locale}${href}`;
-    }
-    return href;
+    const locale = pathname.split('/')[1];
+    return `/${locale}${href}`;
   };
 
   return (
     <section
-      className={cn(
-        'mt-8 rounded-2xl',
-        'border border-(--border-color) bg-(--card-color)',
-        'p-6 sm:p-8',
-      )}
-      aria-labelledby='related-features-heading'
+      className='flex flex-col gap-6 pt-12'
+      aria-labelledby='related-heading'
     >
-      <h2
-        id='related-features-heading'
-        className='mb-6 text-xl font-bold text-(--main-color) sm:text-2xl'
-      >
-        Continue Learning Japanese
-      </h2>
+      <div className='flex flex-col gap-2'>
+        <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+          <div className='h-[1px] w-4 bg-(--main-color)' />
+          <span>Explore</span>
+        </div>
+        <h2
+          id='related-heading'
+          className='text-xl font-bold tracking-tight text-(--main-color)'
+        >
+          Related Features
+        </h2>
+      </div>
 
-      <p className='mb-6 text-sm text-(--secondary-color)'>
-        Explore more tools and resources to enhance your Japanese learning
-        journey.
-      </p>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        {links.map(link => (
+          <Link
+            key={link.id}
+            href={getLocalizedHref(link.href)}
+            className='group flex flex-col gap-2 rounded-lg border border-(--border-color)/5 p-4 transition-colors duration-200 hover:bg-(--main-color)/5'
+          >
+            <div className='flex items-center gap-2 text-(--main-color)'>
+              {link.icon}
+              <span className='text-sm font-bold'>{link.title}</span>
+            </div>
+            <p className='text-xs leading-relaxed text-(--secondary-color)/60'>
+              {link.description}
+            </p>
+          </Link>
+        ))}
+      </div>
 
-      <nav aria-label='Related features'>
-        <ul className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {links.map((link, index) => (
-            <li key={index}>
-              <Link
-                href={getLocalizedHref(link.href)}
-                className={cn(
-                  'flex h-full flex-col gap-3 rounded-xl p-4',
-                  'border border-(--border-color)',
-                  'bg-(--background-color)',
-                  'hover:border-(--main-color)/50',
-                  'hover:bg-(--main-color)/5',
-                  'transition-colors duration-200',
-                  'group',
-                )}
-              >
-                {/* Icon */}
-                <div
-                  className={cn(
-                    'flex h-10 w-10 items-center justify-center rounded-lg',
-                    'bg-(--main-color)/10',
-                    'text-(--main-color)',
-                    'group-hover:bg-(--main-color)/20',
-                    'transition-colors duration-200',
-                  )}
-                >
-                  {link.icon}
-                </div>
-
-                {/* Content */}
-                <div className='flex-1'>
-                  <h3 className='font-semibold text-(--main-color) group-hover:underline'>
-                    {link.title}
-                  </h3>
-                  <p className='mt-1 text-sm text-(--secondary-color)'>
-                    {link.description}
-                  </p>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* Additional SEO text */}
-      <p className='mt-6 text-xs text-(--secondary-color)'>
-        KanaDojo offers a complete suite of Japanese learning tools. From
-        mastering the basics with Hiragana and Katakana practice, to building
-        vocabulary and understanding Kanji, our platform supports learners at
-        every level. Use the verb conjugator alongside these resources for
-        comprehensive Japanese language study.
-      </p>
+      <div className='pt-8 text-center text-[10px] font-bold tracking-widest text-(--secondary-color)/20 uppercase'>
+        Continuity through repetition
+      </div>
     </section>
   );
 }

@@ -23,7 +23,7 @@ const webApplicationSchema = {
   '@type': 'WebApplication',
   name: 'Anki Deck to JSON Converter',
   alternateName: 'Anki Converter',
-  url: 'https://kanadojo.com/en/tools/anki-converter',
+  url: 'https://kanadojo.com/en/anki-converter',
   applicationCategory: 'UtilityApplication',
   applicationSubCategory: 'File Converter',
   operatingSystem: 'Any',
@@ -345,7 +345,7 @@ describe('Anki Converter SEO Elements', () => {
       description:
         'Convert Anki flashcard decks to JSON format instantly. Supports APKG, TSV, SQLite, and COLPKG files. Free, fast, and completely private - all processing happens in your browser.',
       type: 'website',
-      url: 'https://kanadojo.com/en/tools/anki-converter',
+      url: 'https://kanadojo.com/en/anki-converter',
       siteName: 'KanaDojo',
     };
 
@@ -374,3 +374,4 @@ describe('Anki Converter SEO Elements', () => {
     });
   });
 });
+

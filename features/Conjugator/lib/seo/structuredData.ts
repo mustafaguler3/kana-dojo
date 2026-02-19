@@ -274,14 +274,6 @@ export function generateBreadcrumbSchema(
       '@type': 'ListItem',
       position: 2,
       item: {
-        '@id': `${BASE_URL}/tools`,
-        name: 'Tools',
-      },
-    },
-    {
-      '@type': 'ListItem',
-      position: 3,
-      item: {
         '@id': `${BASE_URL}${CONJUGATE_PATH}`,
         name: 'Verb Conjugator',
       },
@@ -292,7 +284,7 @@ export function generateBreadcrumbSchema(
   if (verb) {
     items.push({
       '@type': 'ListItem',
-      position: 4,
+      position: 3,
       item: {
         '@id': `${BASE_URL}${CONJUGATE_PATH}?verb=${encodeURIComponent(verb)}`,
         name: `${verb} Conjugation`,

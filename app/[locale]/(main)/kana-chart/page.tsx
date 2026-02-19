@@ -32,10 +32,9 @@ export default async function KanaChartPage({
       <BreadcrumbSchema
         items={[
           { name: 'Home', url: `https://kanadojo.com/${locale}` },
-          { name: 'Tools', url: `https://kanadojo.com/${locale}/tools` },
           {
             name: 'Kana Chart',
-            url: `https://kanadojo.com/${locale}/tools/kana-chart`,
+            url: `https://kanadojo.com/${locale}/kana-chart`,
           },
         ]}
       />
@@ -80,3 +79,4 @@ export default async function KanaChartPage({
     </>
   );
 }
+

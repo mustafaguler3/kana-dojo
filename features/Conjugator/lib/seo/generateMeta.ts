@@ -149,16 +149,7 @@ export function generateCanonicalUrl(
   options?: GenerateMetaOptions,
 ): string {
   const baseUrl = options?.baseUrl ?? BASE_URL;
-  const locale = options?.locale;
-
-  let url = baseUrl;
-
-  // Add locale if provided
-  if (locale) {
-    url += `/${locale}`;
-  }
-
-  url += CONJUGATE_PATH;
+  let url = `${baseUrl}${CONJUGATE_PATH}`;
 
   // Add verb parameter if provided
   if (verb) {
@@ -243,17 +234,6 @@ export function generateNextMetadata(
   options?: GenerateMetaOptions,
 ) {
   const meta = generateMeta(verb, options);
-  const baseUrl = options?.baseUrl ?? BASE_URL;
-  const locale = options?.locale;
-
-  // Build alternate language URLs
-  const alternateLanguages: Record<string, string> = {};
-  for (const lang of ['en', 'es', 'ja']) {
-    alternateLanguages[lang] = generateCanonicalUrl(verb?.dictionaryForm, {
-      ...options,
-      locale: lang,
-    });
-  }
 
   return {
     title: meta.title,
@@ -281,7 +261,6 @@ export function generateNextMetadata(
     },
     alternates: {
       canonical: meta.canonicalUrl,
-      languages: locale ? alternateLanguages : undefined,
     },
   };
 }

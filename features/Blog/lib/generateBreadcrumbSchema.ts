@@ -62,19 +62,19 @@ export function generateBreadcrumbSchema(
         '@type': 'ListItem',
         position: 1,
         name: homeLabel,
-        item: `${baseUrl}/${post.locale}`,
+        item: baseUrl,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: academyLabel,
-        item: `${baseUrl}/${post.locale}/academy`,
+        item: `${baseUrl}/academy`,
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: post.title,
-        item: `${baseUrl}/${post.locale}/academy/${post.slug}`,
+        item: `${baseUrl}/academy/${post.slug}`,
       },
     ],
   };

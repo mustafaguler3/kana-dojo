@@ -8,8 +8,6 @@ import {
   generateBlogMetadata,
   generateArticleSchema,
   generateBreadcrumbSchema,
-  generateHreflang,
-  getPostLocales,
   BlogPostComponent,
   mdxComponents,
 } from '@/features/Blog';
@@ -61,25 +59,7 @@ export async function generateMetadata({
   }
 
   // Generate base metadata from post
-  const metadata = generateBlogMetadata(post);
-
-  // Add hreflang alternates for multi-locale posts
-  const availableLocales = getPostLocales(slug);
-  if (availableLocales.length > 1) {
-    const hreflangTags = generateHreflang(slug, availableLocales);
-    const languages: Record<string, string> = {};
-    for (const tag of hreflangTags) {
-      if (tag.hreflang !== 'x-default') {
-        languages[tag.hreflang] = tag.href;
-      }
-    }
-    metadata.alternates = {
-      ...metadata.alternates,
-      languages,
-    };
-  }
-
-  return metadata;
+  return generateBlogMetadata(post);
 }
 
 /**

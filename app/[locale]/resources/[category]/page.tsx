@@ -35,7 +35,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; category: string }>;
 }): Promise<Metadata> {
-  const { locale, category: categoryId } = await params;
+  const { category: categoryId } = await params;
   const category = getCategoryById(categoryId);
 
   if (!category) {
@@ -62,7 +62,7 @@ export async function generateMetadata({
     openGraph: {
       title: `Best ${category.name} for Learning Japanese | KanaDojo`,
       description,
-      url: `https://kanadojo.com/${locale}/resources/${categoryId}`,
+      url: `https://kanadojo.com/resources/${categoryId}`,
       type: 'website',
     },
     twitter: {
@@ -71,11 +71,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `https://kanadojo.com/${locale}/resources/${categoryId}`,
-      languages: {
-        en: `/en/resources/${categoryId}`,
-        es: `/es/resources/${categoryId}`,
-      },
+      canonical: `https://kanadojo.com/resources/${categoryId}`,
     },
   };
 }
@@ -84,15 +80,24 @@ export async function generateMetadata({
 function generateItemListSchema(
   categoryName: string,
   categoryDescription: string,
-  resourceCount: number,
+  resources: ReturnType<typeof getResourcesByCategory>,
 ) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `Best ${categoryName} for Learning Japanese`,
     description: categoryDescription,
-    numberOfItems: resourceCount,
+    numberOfItems: resources.length,
     itemListOrder: 'https://schema.org/ItemListUnordered',
+    itemListElement: resources.slice(0, 25).map((resource, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'LearningResource',
+        name: resource.name,
+        url: resource.url,
+      },
+    })),
   };
 }
 
@@ -120,18 +125,18 @@ export default async function CategoryPage({
   const availableFilters = getFilterOptions(categoryResources);
 
   const breadcrumbItems = [
-    { name: 'Home', url: `https://kanadojo.com/${locale}` },
-    { name: 'Resources', url: `https://kanadojo.com/${locale}/resources` },
+    { name: 'Home', url: 'https://kanadojo.com' },
+    { name: 'Resources', url: 'https://kanadojo.com/resources' },
     {
       name: category.name,
-      url: `https://kanadojo.com/${locale}/resources/${categoryId}`,
+      url: `https://kanadojo.com/resources/${categoryId}`,
     },
   ];
 
   const itemListSchema = generateItemListSchema(
     category.name,
     category.description,
-    categoryResources.length,
+    categoryResources,
   );
 
   return (

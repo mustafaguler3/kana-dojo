@@ -37,7 +37,7 @@ export function RelatedPosts({ posts, className }: RelatedPostsProps) {
         {posts.map(post => (
           <li key={post.slug} data-testid={`related-post-${post.slug}`}>
             <Link
-              href={`/blog/${post.slug}`}
+              href={`/academy/${post.slug}`}
               className='group block'
               data-testid={`related-post-link-${post.slug}`}
             >

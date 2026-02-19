@@ -38,12 +38,12 @@ export default async function AcademyPage({ params }: AcademyPageProps) {
       'A curated collection of Japanese learning guides, tutorials, and study tips covering Hiragana, Katakana, Kanji, vocabulary, grammar, and JLPT preparation.',
     numberOfItems: posts.length,
     itemListOrder: 'https://schema.org/ItemListOrderDescending',
-    itemListElement: posts.slice(0, 20).map((post, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      url: `https://kanadojo.com/${locale}/academy/${post.slug}`,
-      name: post.title,
-    })),
+      itemListElement: posts.slice(0, 20).map((post, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://kanadojo.com/academy/${post.slug}`,
+        name: post.title,
+      })),
   };
 
   // Generate CollectionPage schema
@@ -53,7 +53,7 @@ export default async function AcademyPage({ params }: AcademyPageProps) {
     name: 'KanaDojo Academy',
     description:
       'A comprehensive collection of Japanese learning articles, tutorials, and study guides.',
-    url: `https://kanadojo.com/${locale}/academy`,
+    url: 'https://kanadojo.com/academy',
     isPartOf: {
       '@type': 'WebSite',
       name: 'KanaDojo',
@@ -71,8 +71,8 @@ export default async function AcademyPage({ params }: AcademyPageProps) {
       {/* Structured Data for SEO */}
       <BreadcrumbSchema
         items={[
-          { name: 'Home', url: `https://kanadojo.com/${locale}` },
-          { name: 'Academy', url: `https://kanadojo.com/${locale}/academy` },
+          { name: 'Home', url: 'https://kanadojo.com' },
+          { name: 'Academy', url: 'https://kanadojo.com/academy' },
         ]}
       />
       <StructuredData data={itemListSchema} />

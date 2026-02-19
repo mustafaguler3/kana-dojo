@@ -1,122 +1,45 @@
-# KanaDojo Robots Configuration
-# Optimized for all search engines with special attention to Bing
-
-# Default - All Bots Welcome
+# *
 User-agent: *
 Allow: /
-Crawl-delay: 0
 
-# Google Crawlers
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0
-
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: Googlebot-Video
-Allow: /
-
-# Bing Crawlers (Optimized)
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 0
-
-User-agent: msnbot
-Allow: /
-Crawl-delay: 0
-
-User-agent: BingPreview
-Allow: /
-
-User-agent: adidxbot
-Allow: /
-
-# Other Major Search Engines
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
-
-User-agent: facebot
-Allow: /
-
-User-agent: ia_archiver
-Allow: /
-
-# Social Media Crawlers
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-# AI + Research Crawlers
+# GPTBot
 User-agent: GPTBot
 Allow: /
 
+# ChatGPT-User
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Google-Extended
-Allow: /
-
-User-agent: GoogleOther
-Allow: /
-
-User-agent: GoogleOther-Image
-Allow: /
-
-User-agent: GoogleOther-Video
-Allow: /
-
-User-agent: Google-InspectionTool
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
+# Claude-Web
 User-agent: Claude-Web
 Allow: /
 
+# anthropic-ai
 User-agent: anthropic-ai
 Allow: /
 
+# PerplexityBot
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: omgili
+# Google-Extended
+User-agent: Google-Extended
 Allow: /
 
-User-agent: omgili bot
+# CCBot
+User-agent: CCBot
 Allow: /
 
-User-agent: Amazonbot
-Allow: /
-
+# Applebot
 User-agent: Applebot
 Allow: /
 
-User-agent: AdsBot-Google
+# Amazonbot
+User-agent: Amazonbot
 Allow: /
 
-# Host (Primary Domain)
+# Host
 Host: https://kanadojo.com
 
 # Sitemaps
 Sitemap: https://kanadojo.com/sitemap.xml
-Sitemap: https://kanadojo.com/sitemap-0.xml
-
-# AI-Friendly Content (GEO)
-# LLMs.txt for AI model consumption
-# https://kanadojo.com/llms.txt

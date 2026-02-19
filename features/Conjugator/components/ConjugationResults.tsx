@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { Expand, Minimize2, Copy, Check, Loader2 } from 'lucide-react';
+import { Copy, Check, Loader2 } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import { ActionButton } from '@/shared/components/ui/ActionButton';
 import type {
   ConjugationResult,
   ConjugationCategory as CategoryType,
@@ -18,43 +17,18 @@ interface ConjugationResultsProps {
   result: ConjugationResult | null;
   /** Whether conjugation is in progress */
   isLoading: boolean;
-  /** Currently expanded categories */
-  expandedCategories: CategoryType[];
-  /** Callback to toggle a category */
-  onToggleCategory: (category: CategoryType) => void;
-  /** Callback to expand all categories */
-  onExpandAll: () => void;
-  /** Callback to collapse all categories */
-  onCollapseAll: () => void;
   /** Callback to copy a single form */
   onCopyForm: (form: ConjugationForm) => void;
-  /** Callback to copy all forms */
-  onCopyAll: () => void;
 }
 
 /**
  * ConjugationResults - Displays all conjugated forms organized by category
- *
- * Features:
- * - VerbInfoCard showing verb type and stem
- * - All ConjugationCategory components
- * - Expand all / collapse all buttons
- * - Copy all button
- * - aria-live region for dynamic content updates
- *
- * Requirements: 5.2, 6.2, 10.2
  */
 export default function ConjugationResults({
   result,
   isLoading,
-  expandedCategories,
-  onToggleCategory,
-  onExpandAll,
-  onCollapseAll,
   onCopyForm,
-  onCopyAll,
 }: ConjugationResultsProps) {
-  const [copiedAll, setCopiedAll] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const previousResultRef = useRef<ConjugationResult | null>(null);
 
@@ -71,78 +45,34 @@ export default function ConjugationResults({
     return grouped;
   }, [result]);
 
-  // Get categories that have forms
-  const categoriesWithForms = useMemo(() => {
-    return ALL_CONJUGATION_CATEGORIES.filter(
-      cat => (formsByCategory.get(cat)?.length ?? 0) > 0,
-    );
-  }, [formsByCategory]);
-
-  // Check if all categories are expanded
-  const allExpanded = useMemo(() => {
-    return categoriesWithForms.every(cat => expandedCategories.includes(cat));
-  }, [categoriesWithForms, expandedCategories]);
-
   // Update status message when result changes for screen readers
   useEffect(() => {
     if (result && result !== previousResultRef.current) {
       setStatusMessage(
-        `Conjugation complete for ${result.verb.dictionaryForm}. ${result.forms.length} forms available across ${categoriesWithForms.length} categories.`,
+        `Conjugation complete for ${result.verb.dictionaryForm}. ${result.forms.length} forms available.`,
       );
       previousResultRef.current = result;
     } else if (isLoading) {
-      setStatusMessage('Conjugating verb, please wait...');
+      setStatusMessage('Conjugating...');
     }
-  }, [result, isLoading, categoriesWithForms.length]);
+  }, [result, isLoading]);
 
-  // Handle copy all with feedback
-  const handleCopyAll = useCallback(() => {
-    onCopyAll();
-    setCopiedAll(true);
-    setStatusMessage('All conjugation forms copied to clipboard.');
-    setTimeout(() => setCopiedAll(false), 2000);
-  }, [onCopyAll]);
-
-  // Loading state
   if (isLoading) {
     return (
-      <div
-        className={cn(
-          'flex flex-col items-center justify-center rounded-2xl py-16',
-          'border border-(--border-color) bg-(--card-color)',
-        )}
-      >
-        <Loader2 className='h-10 w-10 animate-spin text-(--main-color)' />
-        <p className='mt-4 text-sm text-(--secondary-color)'>
-          Conjugating verb...
+      <div className='flex flex-col items-center justify-center py-20 text-center'>
+        <Loader2 className='h-8 w-8 animate-spin text-(--main-color) opacity-20' />
+        <p className='mt-4 text-xl font-bold tracking-tight text-(--main-color) opacity-40'>
+          Conjugating...
         </p>
       </div>
     );
   }
 
-  // No result state
   if (!result) {
     return (
-      <div
-        className={cn(
-          'flex flex-col items-center justify-center rounded-2xl py-16',
-          'border border-(--border-color) bg-(--card-color)',
-          'text-(--secondary-color)',
-        )}
-      >
-        <div
-          className={cn(
-            'mb-4 rounded-full p-4',
-            'bg-(--secondary-color)/10',
-          )}
-        >
-          <span className='text-4xl'>📚</span>
-        </div>
-        <p className='text-base font-medium'>
-          Enter a verb to see conjugations
-        </p>
-        <p className='mt-1 text-sm opacity-70'>
-          Try verbs like 食べる, 行く, or する
+      <div className='flex flex-col items-center justify-center py-24 text-center'>
+        <p className='text-3xl font-black tracking-tight text-(--main-color) opacity-20 sm:text-4xl'>
+          Type a verb to start
         </p>
       </div>
     );
@@ -150,12 +80,10 @@ export default function ConjugationResults({
 
   return (
     <div
-      className='flex flex-col gap-4'
+      className='flex flex-col gap-6'
       role='region'
       aria-label='Conjugation results'
-      aria-busy={isLoading}
     >
-      {/* Screen reader status announcements */}
       <div
         className='sr-only'
         role='status'
@@ -165,91 +93,40 @@ export default function ConjugationResults({
         {statusMessage}
       </div>
 
-      {/* Verb info card */}
-      <VerbInfoCard verb={result.verb} />
-
-      {/* Action buttons */}
-      <div
-        className='flex items-center justify-between gap-2'
-        role='toolbar'
-        aria-label='Conjugation result actions'
-      >
-        <div className='flex items-center gap-2'>
-          <ActionButton
-            onClick={allExpanded ? onCollapseAll : onExpandAll}
-            colorScheme='secondary'
-            borderColorScheme='secondary'
-            borderRadius='xl'
-            borderBottomThickness={6}
-            className='!w-auto px-3 text-sm'
-            aria-label={
-              allExpanded ? 'Collapse all categories' : 'Expand all categories'
-            }
-          >
-            {allExpanded ? (
-              <>
-                <Minimize2 className='h-4 w-4' aria-hidden='true' />
-                <span className='hidden sm:inline'>Collapse All</span>
-              </>
-            ) : (
-              <>
-                <Expand className='h-4 w-4' aria-hidden='true' />
-                <span className='hidden sm:inline'>Expand All</span>
-              </>
-            )}
-          </ActionButton>
+      <div className='flex flex-col gap-8'>
+        <div className='flex flex-col gap-2'>
+          <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+            <div className='h-[1px] w-4 bg-(--main-color)' />
+            <span>Analysis</span>
+          </div>
+          <h2 className='text-2xl font-bold tracking-tight text-(--main-color)'>
+            Conjugations
+          </h2>
         </div>
 
-        <ActionButton
-          onClick={handleCopyAll}
-          colorScheme='main'
-          borderColorScheme='main'
-          borderRadius='xl'
-          borderBottomThickness={6}
-          className='!w-auto px-3 text-sm'
-          aria-label={
-            copiedAll
-              ? 'All forms copied to clipboard'
-              : 'Copy all conjugation forms to clipboard'
-          }
-        >
-          {copiedAll ? (
-            <>
-              <Check className='h-4 w-4' aria-hidden='true' />
-              <span>Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy className='h-4 w-4' aria-hidden='true' />
-              <span className='hidden sm:inline'>Copy All</span>
-            </>
-          )}
-        </ActionButton>
+        <section className='border-b border-(--border-color)/10 pb-8'>
+          <VerbInfoCard verb={result.verb} />
+        </section>
       </div>
 
-      {/* Category cards */}
-      <div
-        className='flex flex-col gap-3'
-        role='list'
-        aria-label='Conjugation categories'
-      >
-        {categoriesWithForms.map(category => (
+      <div className='flex flex-col gap-24' role='list'>
+        {ALL_CONJUGATION_CATEGORIES.map(category => (
           <ConjugationCategory
             key={category}
             category={category}
             forms={formsByCategory.get(category) || []}
-            isExpanded={expandedCategories.includes(category)}
-            onToggle={() => onToggleCategory(category)}
+            isExpanded={true}
+            onToggle={() => {}}
             onCopy={onCopyForm}
           />
         ))}
       </div>
 
-      {/* Form count summary */}
-      <div className='text-center text-xs text-(--secondary-color)'>
-        {result.forms.length} conjugation forms across{' '}
-        {categoriesWithForms.length} categories
-      </div>
+      <footer className='mt-8 border-t border-(--border-color)/10 py-12'>
+        <p className='text-center text-xs font-bold text-(--secondary-color)/40'>
+          Generated {result.forms.length} forms for {result.verb.dictionaryForm}
+        </p>
+      </footer>
     </div>
   );
 }

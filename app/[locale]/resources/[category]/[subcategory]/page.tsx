@@ -43,11 +43,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; category: string; subcategory: string }>;
 }): Promise<Metadata> {
-  const {
-    locale,
-    category: categoryId,
-    subcategory: subcategoryId,
-  } = await params;
+  const { category: categoryId, subcategory: subcategoryId } = await params;
 
   const category = getCategoryById(categoryId);
   const subcategory = getSubcategoryById(categoryId, subcategoryId);
@@ -76,7 +72,7 @@ export async function generateMetadata({
     openGraph: {
       title: `Best ${subcategory.name} for Learning Japanese | KanaDojo`,
       description,
-      url: `https://kanadojo.com/${locale}/resources/${categoryId}/${subcategoryId}`,
+      url: `https://kanadojo.com/resources/${categoryId}/${subcategoryId}`,
       type: 'website',
     },
     twitter: {
@@ -85,11 +81,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `https://kanadojo.com/${locale}/resources/${categoryId}/${subcategoryId}`,
-      languages: {
-        en: `/en/resources/${categoryId}/${subcategoryId}`,
-        es: `/es/resources/${categoryId}/${subcategoryId}`,
-      },
+      canonical: `https://kanadojo.com/resources/${categoryId}/${subcategoryId}`,
     },
   };
 }
@@ -98,15 +90,24 @@ export async function generateMetadata({
 function generateItemListSchema(
   subcategoryName: string,
   subcategoryDescription: string,
-  resourceCount: number,
+  resources: ReturnType<typeof getResourcesBySubcategory>,
 ) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `Best ${subcategoryName} for Learning Japanese`,
     description: subcategoryDescription,
-    numberOfItems: resourceCount,
+    numberOfItems: resources.length,
     itemListOrder: 'https://schema.org/ItemListUnordered',
+    itemListElement: resources.slice(0, 25).map((resource, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'LearningResource',
+        name: resource.name,
+        url: resource.url,
+      },
+    })),
   };
 }
 
@@ -142,22 +143,22 @@ export default async function SubcategoryPage({
   const availableFilters = getFilterOptions(subcategoryResources);
 
   const breadcrumbItems = [
-    { name: 'Home', url: `https://kanadojo.com/${locale}` },
-    { name: 'Resources', url: `https://kanadojo.com/${locale}/resources` },
+    { name: 'Home', url: 'https://kanadojo.com' },
+    { name: 'Resources', url: 'https://kanadojo.com/resources' },
     {
       name: category.name,
-      url: `https://kanadojo.com/${locale}/resources/${categoryId}`,
+      url: `https://kanadojo.com/resources/${categoryId}`,
     },
     {
       name: subcategory.name,
-      url: `https://kanadojo.com/${locale}/resources/${categoryId}/${subcategoryId}`,
+      url: `https://kanadojo.com/resources/${categoryId}/${subcategoryId}`,
     },
   ];
 
   const itemListSchema = generateItemListSchema(
     subcategory.name,
     subcategory.description,
-    subcategoryResources.length,
+    subcategoryResources,
   );
 
   return (

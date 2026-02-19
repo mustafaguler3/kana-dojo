@@ -90,19 +90,42 @@ function parsePostFile(filePath: string, locale: Locale): BlogPost | null {
     // Extract headings for table of contents
     const headings = extractHeadings(content);
 
+    const tags = Array.isArray(frontmatter.tags)
+      ? frontmatter.tags
+          .filter((tag): tag is string => typeof tag === 'string')
+          .filter(tag => tag.trim().length > 0)
+      : typeof frontmatter.tags === 'string'
+        ? frontmatter.tags
+            .split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0)
+        : [];
+
+    const relatedPosts = Array.isArray(frontmatter.relatedPosts)
+      ? frontmatter.relatedPosts
+          .filter((post): post is string => typeof post === 'string')
+          .filter(post => post.trim().length > 0)
+      : undefined;
+
     const meta: BlogPostMeta = {
-      title: frontmatter.title as string,
-      description: frontmatter.description as string,
+      title: String(frontmatter.title),
+      description: String(frontmatter.description),
       slug,
-      publishedAt: frontmatter.publishedAt as string,
-      updatedAt: frontmatter.updatedAt as string | undefined,
-      author: frontmatter.author as string,
+      publishedAt: String(frontmatter.publishedAt),
+      updatedAt:
+        typeof frontmatter.updatedAt === 'string'
+          ? frontmatter.updatedAt
+          : undefined,
+      author: String(frontmatter.author),
       category: frontmatter.category as Category,
-      tags: frontmatter.tags as string[],
-      featuredImage: frontmatter.featuredImage as string | undefined,
+      tags,
+      featuredImage:
+        typeof frontmatter.featuredImage === 'string'
+          ? frontmatter.featuredImage
+          : undefined,
       readingTime,
       difficulty: frontmatter.difficulty as BlogPostMeta['difficulty'],
-      relatedPosts: frontmatter.relatedPosts as string[] | undefined,
+      relatedPosts,
       locale,
     };
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Plus, Minus } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { CONJUGATOR_FAQ_ITEMS, type FAQItem } from '../lib/seo/structuredData';
 
@@ -13,19 +13,11 @@ interface FAQProps {
 }
 
 /**
- * FAQ - Comprehensive FAQ section for the conjugator page
- *
- * Features:
- * - Semantic HTML structure for accessibility and SEO
- * - Expandable/collapsible FAQ items
- * - 15+ comprehensive questions about Japanese verb conjugation
- * - Proper ARIA labels and roles
- *
- * Requirements: 13.6, 10.2
+ * FAQ - Comprehensive FAQ section with pretty collapsible cards
  */
 export default function FAQ({
   items = CONJUGATOR_FAQ_ITEMS,
-  initialDisplayCount = 15,
+  initialDisplayCount = 10,
 }: FAQProps) {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
@@ -55,59 +47,47 @@ export default function FAQ({
 
   return (
     <section
-      className={cn(
-        'mt-8 rounded-2xl',
-        'border border-(--border-color) bg-(--card-color)',
-        'p-6 sm:p-8',
-      )}
+      className='mt-20 flex flex-col gap-12'
       aria-labelledby='faq-heading'
       itemScope
       itemType='https://schema.org/FAQPage'
     >
-      {/* Header */}
-      <div className='mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-        <h2
-          id='faq-heading'
-          className='text-xl font-bold text-(--main-color) sm:text-2xl'
-        >
-          Frequently Asked Questions
-        </h2>
+      <div className='flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between'>
+        <div className='flex flex-col gap-2'>
+          <div className='flex items-center gap-2 text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase'>
+            <div className='h-[1px] w-4 bg-(--main-color)' />
+            <span>Encyclopedia</span>
+          </div>
+          <h2
+            id='faq-heading'
+            className='text-2xl font-bold tracking-tight text-(--main-color) sm:text-3xl'
+          >
+            Frequently Asked Questions
+          </h2>
+        </div>
 
-        {/* Expand/Collapse controls */}
-        <div className='flex gap-2' role='group' aria-label='FAQ controls'>
+        <div className='flex items-center gap-6'>
           <button
             onClick={expandAll}
-            className={cn(
-              'rounded-lg px-3 py-1.5 text-xs font-medium',
-              'border border-(--border-color)',
-              'text-(--secondary-color)',
-              'hover:bg-(--border-color)/50',
-              'transition-colors duration-200',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color)',
-            )}
-            aria-label='Expand all FAQ items'
+            className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase transition-colors hover:text-(--main-color)'
           >
             Expand All
           </button>
+          <div className='h-3 w-[1px] bg-(--border-color)/20' />
           <button
             onClick={collapseAll}
-            className={cn(
-              'rounded-lg px-3 py-1.5 text-xs font-medium',
-              'border border-(--border-color)',
-              'text-(--secondary-color)',
-              'hover:bg-(--border-color)/50',
-              'transition-colors duration-200',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color)',
-            )}
-            aria-label='Collapse all FAQ items'
+            className='text-[10px] font-bold tracking-widest text-(--secondary-color)/40 uppercase transition-colors hover:text-(--main-color)'
           >
             Collapse All
           </button>
         </div>
       </div>
 
-      {/* FAQ Items */}
-      <div className='space-y-3' role='list' aria-label='FAQ items'>
+      <div
+        className='grid grid-cols-1 gap-4'
+        role='list'
+        aria-label='FAQ items'
+      >
         {displayedItems.map((item, index) => (
           <FAQItemComponent
             key={index}
@@ -119,24 +99,15 @@ export default function FAQ({
         ))}
       </div>
 
-      {/* Show More/Less button */}
       {hasMoreItems && (
-        <div className='mt-6 text-center'>
+        <div className='flex justify-center py-4'>
           <button
             onClick={() => setShowAll(!showAll)}
-            className={cn(
-              'rounded-lg px-4 py-2 text-sm font-medium',
-              'border border-(--main-color)/30',
-              'text-(--main-color)',
-              'hover:bg-(--main-color)/10',
-              'transition-colors duration-200',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color)',
-            )}
-            aria-expanded={showAll}
+            className='rounded-full border border-(--main-color)/10 px-6 py-2 text-[10px] font-bold tracking-widest text-(--main-color) uppercase transition-colors hover:bg-(--main-color)/5'
           >
             {showAll
-              ? 'Show Less'
-              : `Show ${items.length - initialDisplayCount} More Questions`}
+              ? 'Show Fewer'
+              : `Reveal ${items.length - initialDisplayCount} More Questions`}
           </button>
         </div>
       )}
@@ -145,7 +116,7 @@ export default function FAQ({
 }
 
 /**
- * Individual FAQ item component
+ * Individual FAQ item component - Pretty Card Style
  */
 function FAQItemComponent({
   item,
@@ -163,66 +134,57 @@ function FAQItemComponent({
   return (
     <div
       className={cn(
-        'rounded-xl',
-        'border border-(--border-color)',
-        'overflow-hidden',
-        'transition-colors duration-200',
-        isExpanded && 'bg-(--background-color)',
+        'group flex flex-col rounded-2xl border border-(--border-color)/5 transition-all duration-300',
+        isExpanded
+          ? 'border-(--main-color)/10 bg-(--main-color)/5'
+          : 'hover:bg-(--main-color)/2',
       )}
       itemScope
       itemProp='mainEntity'
       itemType='https://schema.org/Question'
       role='listitem'
     >
-      {/* Question */}
       <button
         onClick={onToggle}
-        className={cn(
-          'flex w-full items-center justify-between gap-4 p-4',
-          'text-left',
-          'hover:bg-(--background-color)',
-          'transition-colors duration-200',
-          'cursor-pointer',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color) focus-visible:ring-inset',
-        )}
+        className='flex w-full items-center justify-between gap-6 p-6 text-left focus:outline-none'
         aria-expanded={isExpanded}
         aria-controls={answerId}
       >
-        <h3
-          className='text-sm font-medium text-(--main-color) sm:text-base'
-          itemProp='name'
-        >
+        <span className='text-lg font-bold tracking-tight text-(--main-color) sm:text-xl'>
           {item.question}
-        </h3>
-        <ChevronDown
+        </span>
+        <div
           className={cn(
-            'h-5 w-5 shrink-0 text-(--secondary-color)',
-            'transition-transform duration-200',
-            isExpanded && 'rotate-180',
+            'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300',
+            isExpanded
+              ? 'rotate-180 bg-(--main-color) text-white'
+              : 'bg-(--main-color)/10 text-(--main-color)',
           )}
           aria-hidden='true'
-        />
+        >
+          <ChevronDown className='h-4 w-4' />
+        </div>
       </button>
 
-      {/* Answer */}
-      {isExpanded && (
-        <div
-          id={answerId}
-          className='border-t border-(--border-color) px-4 py-4'
-          itemScope
-          itemProp='acceptedAnswer'
-          itemType='https://schema.org/Answer'
-          role='region'
-          aria-label={`Answer to: ${item.question}`}
-        >
-          <p
-            className='text-sm leading-relaxed text-(--secondary-color)'
-            itemProp='text'
-          >
-            {item.answer}
-          </p>
+      <div
+        id={answerId}
+        className={cn(
+          'grid transition-all duration-500 ease-in-out',
+          isExpanded
+            ? 'grid-rows-[1fr] opacity-100'
+            : 'grid-rows-[0fr] opacity-0',
+        )}
+        role='region'
+        aria-label={`Answer to: ${item.question}`}
+      >
+        <div className='overflow-hidden'>
+          <div className='px-6 pt-0 pb-6'>
+            <p className='text-base leading-relaxed font-medium text-(--secondary-color)/70'>
+              {item.answer}
+            </p>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

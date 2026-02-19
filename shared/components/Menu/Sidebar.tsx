@@ -79,7 +79,7 @@ const staticSecondaryNavSections: NavSection[] = [
     items: [
       { href: '/translate', label: 'Translate', icon: Languages },
       { href: '/conjugate', label: 'Conjugate', icon: Repeat },
-      { href: '/tools/anki-converter', label: 'Converter', icon: Package },
+      { href: '/anki-converter', label: 'Converter', icon: Package },
     ],
     collapsible: true,
   },
@@ -581,3 +581,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

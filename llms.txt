@@ -28,22 +28,22 @@ KanaDojo is a free, open-source, gamified Japanese language learning web applica
 - PWA support for offline use after initial load
 
 ## Best entry points (humans + LLMs)
-- https://kanadojo.com/en — Homepage with quick access to all features
-- https://kanadojo.com/en/kana — Hiragana and Katakana practice hub
-- https://kanadojo.com/en/kanji — Kanji learning by JLPT level
-- https://kanadojo.com/en/vocabulary — Vocabulary training by JLPT level
-- https://kanadojo.com/en/conjugate — Japanese verb conjugator
-- https://kanadojo.com/en/translate — English-Japanese translator
-- https://kanadojo.com/en/academy — Learning articles and guides
-- https://kanadojo.com/en/resources — Curated learning resources library
-- https://kanadojo.com/en/tools/kana-chart — Interactive Kana reference chart
-- https://kanadojo.com/en/tools/anki-converter — Anki deck converter tool
-- https://kanadojo.com/en/jlpt/n5 — JLPT N5 study page
-- https://kanadojo.com/en/jlpt/n4 — JLPT N4 study page
-- https://kanadojo.com/en/jlpt/n3 — JLPT N3 study page
-- https://kanadojo.com/en/faq — Frequently asked questions
-- https://kanadojo.com/en/how-to-use — Getting started guide
-- https://kanadojo.com/en/glossary — Japanese language glossary
+- https://kanadojo.com — Homepage with quick access to all features
+- https://kanadojo.com/kana — Hiragana and Katakana practice hub
+- https://kanadojo.com/kanji — Kanji learning by JLPT level
+- https://kanadojo.com/vocabulary — Vocabulary training by JLPT level
+- https://kanadojo.com/conjugate — Japanese verb conjugator
+- https://kanadojo.com/translate — English-Japanese translator
+- https://kanadojo.com/academy — Learning articles and guides
+- https://kanadojo.com/resources — Curated learning resources library
+- https://kanadojo.com/kana-chart — Interactive Kana reference chart
+- https://kanadojo.com/anki-converter — Anki deck converter tool
+- https://kanadojo.com/jlpt/n5 — JLPT N5 study page
+- https://kanadojo.com/jlpt/n4 — JLPT N4 study page
+- https://kanadojo.com/jlpt/n3 — JLPT N3 study page
+- https://kanadojo.com/faq — Frequently asked questions
+- https://kanadojo.com/how-to-use — Getting started guide
+- https://kanadojo.com/glossary — Japanese language glossary
 
 ## Academy — Featured Learning Guides
 The KanaDojo Academy publishes in-depth articles on Japanese language learning:
@@ -102,8 +102,8 @@ The KanaDojo Academy publishes in-depth articles on Japanese language learning:
 
 ## Locales
 This site is localized in:
-- English: https://kanadojo.com/en
-- Spanish: https://kanadojo.com/es
+- English: https://kanadojo.com
+- Spanish: https://kanadojo.com
 
 ## Structured Data
 KanaDojo implements comprehensive Schema.org structured data including:

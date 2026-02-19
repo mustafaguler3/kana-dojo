@@ -981,7 +981,9 @@
     "mainColor": "oklch(78.0% 0.160 45.0 / 1)",
     "secondaryColor": "oklch(85.0% 0.120 85.0 / 1)",
     "issued": true,
-    "completed": false
+    "completed": true,
+    "completedBy": "mustafaguler3",
+    "completedPR": 5332
   },
   {
     "id": "autumn-temple",
@@ -990,8 +992,10 @@
     "backgroundColor": "oklch(20.0% 0.048 35.0 / 1)",
     "mainColor": "oklch(68.0% 0.185 40.0 / 1)",
     "secondaryColor": "oklch(78.0% 0.135 55.0 / 1)",
-    "issued": false,
-    "completed": false
+    "issued": true,
+    "completed": true,
+    "completedBy": "Tarjmul810",
+    "completedPR": 5341
   },
   {
     "id": "jpop-energy",
@@ -1000,8 +1004,10 @@
     "backgroundColor": "oklch(15.0% 0.055 310.0 / 1)",
     "mainColor": "oklch(80.0% 0.210 345.0 / 1)",
     "secondaryColor": "oklch(85.0% 0.175 180.0 / 1)",
-    "issued": false,
-    "completed": false
+    "issued": true,
+    "completed": true,
+    "completedBy": "shihabhasan0161",
+    "completedPR": 5364
   },
   {
     "id": "dango-sweet",
@@ -1010,8 +1016,10 @@
     "backgroundColor": "oklch(94.0% 0.020 95.0 / 1)",
     "mainColor": "oklch(65.0% 0.180 350.0 / 1)",
     "secondaryColor": "oklch(72.0% 0.145 130.0 / 1)",
-    "issued": false,
-    "completed": false
+    "issued": true,
+    "completed": true,
+    "completedBy": "KimTram",
+    "completedPR": 5365
   },
   {
     "id": "shinto-portal",
@@ -1020,7 +1028,7 @@
     "backgroundColor": "oklch(18.0% 0.040 15.0 / 1)",
     "mainColor": "oklch(58.0% 0.210 25.0 / 1)",
     "secondaryColor": "oklch(88.0% 0.055 90.0 / 1)",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
@@ -1031,7 +1039,7 @@
     "mainColor": "oklch(65.0% 0.170 25.0 / 1)",
     "secondaryColor": "oklch(58.0% 0.055 260.0 / 1)",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": "noh-mask",
@@ -1040,8 +1048,10 @@
     "backgroundColor": "oklch(20.0% 0.028 285.0 / 1)",
     "mainColor": "oklch(88.0% 0.045 90.0 / 1)",
     "secondaryColor": "oklch(65.0% 0.145 20.0 / 1)",
-    "issued": false,
-    "completed": false
+    "issued": true,
+    "completed": true,
+    "completedBy": "Chizaram-Igolo",
+    "completedPR": 5377
   },
   {
     "id": "strawberry-daifuku",
@@ -1050,8 +1060,10 @@
     "backgroundColor": "oklch(96.0% 0.018 340.0 / 1)",
     "mainColor": "oklch(62.0% 0.195 10.0 / 1)",
     "secondaryColor": "oklch(78.0% 0.095 350.0 / 1)",
-    "issued": false,
-    "completed": false
+    "issued": true,
+    "completed": true,
+    "completedBy": "Chizaram-Igolo",
+    "completedPR": 5383
   },
   {
     "id": "biwako-blue",
@@ -1060,7 +1072,7 @@
     "backgroundColor": "oklch(22.0% 0.042 230.0 / 1)",
     "mainColor": "oklch(75.0% 0.135 225.0 / 1)",
     "secondaryColor": "oklch(82.0% 0.100 215.0 / 1)",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {

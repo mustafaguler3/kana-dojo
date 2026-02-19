@@ -100,10 +100,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://kanadojo.com',
-    languages: {
-      en: 'https://kanadojo.com/en',
-      es: 'https://kanadojo.com/es',
-    },
   },
   robots: {
     index: true,

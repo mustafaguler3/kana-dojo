@@ -49,26 +49,15 @@ export default function ConjugationHistory({
   if (entries.length === 0) {
     return (
       <div
-        className={cn(
-          'flex flex-col items-center justify-center rounded-2xl py-8',
-          'border border-(--border-color) bg-(--card-color)',
-          'text-(--secondary-color)',
-        )}
+        className='flex flex-col items-start gap-4 py-6 text-left opacity-30'
         role='region'
         aria-label='Conjugation history'
       >
-        <div
-          className={cn(
-            'mb-3 rounded-full p-3',
-            'bg-(--secondary-color)/10',
-          )}
-          aria-hidden='true'
-        >
-          <History className='h-8 w-8 opacity-50' />
-        </div>
-        <p className='text-sm font-medium'>No history yet</p>
-        <p className='mt-1 text-xs opacity-70'>
-          Your conjugated verbs will appear here
+        <span className='text-[10px] font-bold tracking-widest uppercase'>
+          History Empty
+        </span>
+        <p className='text-sm font-medium'>
+          Your recent conjugations will appear here.
         </p>
       </div>
     );
@@ -76,104 +65,80 @@ export default function ConjugationHistory({
 
   return (
     <div
-      className={cn(
-        'flex flex-col gap-3 rounded-2xl p-4 sm:p-5',
-        'border border-(--border-color) bg-(--card-color)',
-        'shadow-lg shadow-black/5',
-      )}
+      className='flex flex-col gap-10 transition-all duration-700'
       role='region'
       aria-label='Conjugation history'
     >
-      {/* Header */}
+      {/* Header - Sidebar Style */}
       <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-3'>
-          <div
-            className={cn(
-              'rounded-lg p-2',
-              'bg-(--main-color)/10',
-              'border border-(--main-color)/20',
-            )}
-            aria-hidden='true'
-          >
-            <History className='h-5 w-5 text-(--main-color)' />
-          </div>
-          <div>
-            <h3 className='text-base font-semibold text-(--main-color)'>
-              Recent Verbs
-            </h3>
-            <p className='text-xs text-(--secondary-color)'>
-              {entries.length} verb{entries.length !== 1 ? 's' : ''} in history
-            </p>
-          </div>
+        <div className='flex flex-col gap-1'>
+          <h3 className='text-[10px] font-bold tracking-widest text-(--main-color) uppercase'>
+            History
+          </h3>
+          <p className='text-[10px] font-bold text-(--secondary-color)/40'>
+            {entries.length} recent entries
+          </p>
         </div>
 
-        {/* Clear all button */}
+        {/* Clear all button - Ghost style */}
         <AlertDialog open={clearDialogOpen} onOpenChange={setClearDialogOpen}>
           <AlertDialogTrigger asChild>
-            <ActionButton
-              colorScheme='secondary'
-              borderColorScheme='secondary'
-              borderRadius='xl'
-              borderBottomThickness={6}
-              className='!w-auto px-3 text-sm'
-              aria-label='Clear all history'
+            <button
+              className='flex h-8 w-8 items-center justify-center rounded-full text-(--secondary-color)/40 transition-colors hover:bg-red-500/10 hover:text-red-500'
+              aria-label='Clear history'
             >
-              <Trash2 className='h-4 w-4' aria-hidden='true' />
-              <span className='hidden sm:inline'>Clear</span>
-            </ActionButton>
+              <Trash2 className='h-4 w-4' />
+            </button>
           </AlertDialogTrigger>
           <AlertDialogContent
             className={cn(
               'border-(--border-color) bg-(--background-color)',
-              'rounded-2xl',
+              'rounded-3xl',
             )}
           >
             <AlertDialogHeader>
-              <AlertDialogTitle className='text-(--main-color)'>
-                Clear History?
+              <AlertDialogTitle className='text-3xl font-black tracking-tighter text-(--main-color)'>
+                Purge Archive?
               </AlertDialogTitle>
-              <AlertDialogDescription className='text-(--secondary-color)'>
-                This will permanently delete all your conjugation history. This
-                action cannot be undone.
+              <AlertDialogDescription className='text-base leading-relaxed font-semibold text-(--secondary-color)/60'>
+                This will permanently delete all your linguistic transformation
+                records.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className='flex-row gap-3'>
-              <ActionButton
-                colorScheme='main'
-                borderColorScheme='main'
-                borderRadius='2xl'
-                borderBottomThickness={6}
-                className='!w-auto px-6'
-                onClick={() => setClearDialogOpen(false)}
-              >
-                Cancel
-              </ActionButton>
+            <AlertDialogFooter className='flex-row gap-4 pt-6'>
               <ActionButton
                 colorScheme='secondary'
-                borderColorScheme='secondary'
-                borderRadius='2xl'
-                borderBottomThickness={6}
-                className='!w-auto px-6'
+                borderRadius='full'
+                borderBottomThickness={0}
+                className='flex-1 border border-(--border-color)/50 text-xs font-black tracking-widest uppercase'
+                onClick={() => setClearDialogOpen(false)}
+              >
+                Retain
+              </ActionButton>
+              <ActionButton
+                colorScheme='main'
+                borderRadius='full'
+                borderBottomThickness={0}
+                className='flex-1 bg-red-600 text-xs font-black tracking-widest uppercase hover:bg-red-700'
                 onClick={() => {
                   onClearAll();
                   setClearDialogOpen(false);
                 }}
               >
-                Clear All
+                Purge All
               </ActionButton>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>
 
-      {/* History entries as chips */}
       <div
-        className='flex flex-wrap gap-2'
+        className='flex flex-col'
         role='list'
         aria-label='Recent conjugated verbs'
       >
         {entries.map(entry => (
-          <HistoryChip
+          <HistoryRecord
             key={entry.id}
             entry={entry}
             onSelect={onSelect}
@@ -186,9 +151,9 @@ export default function ConjugationHistory({
 }
 
 /**
- * Individual history chip component
+ * Individual history record component
  */
-function HistoryChip({
+function HistoryRecord({
   entry,
   onSelect,
   onDelete,
@@ -201,75 +166,47 @@ function HistoryChip({
 
   return (
     <div
-      className={cn(
-        'group flex items-center gap-1.5 rounded-xl',
-        'border border-(--border-color) bg-(--background-color)',
-        'hover:border-(--main-color) hover:shadow-md',
-        'transition-all duration-200',
-        'overflow-hidden',
-      )}
+      className='group flex items-center justify-between border-b border-(--border-color)/5 last:border-0'
       role='listitem'
     >
       {/* Clickable verb part */}
       <button
         onClick={() => onSelect(entry)}
-        className={cn(
-          'flex items-center gap-2 py-2 pr-1 pl-3',
-          'cursor-pointer',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-color) focus-visible:ring-inset',
-        )}
-        aria-label={`Conjugate ${entry.verb}, ${typeInfo.label} verb, conjugated ${formatTimestamp(entry.timestamp)} ago`}
+        className='flex min-w-0 flex-1 items-center gap-4 py-4 text-left focus:outline-none'
+        aria-label={`Conjugate ${entry.verb}`}
       >
-        {/* Verb type indicator */}
-        <span
-          className={cn(
-            'flex h-5 w-5 items-center justify-center rounded text-[10px] font-bold',
-            typeInfo.bgClass,
-            typeInfo.textClass,
-          )}
-          title={typeInfo.label}
-          aria-hidden='true'
-        >
-          {typeInfo.abbrev}
-        </span>
+        <div
+          className={cn('h-1.5 w-1.5 shrink-0 rounded-full', typeInfo.bgClass)}
+        />
 
-        {/* Verb text */}
-        <span
-          className='font-japanese text-sm font-medium text-(--main-color)'
-          lang='ja'
-        >
-          {entry.verb}
-        </span>
-
-        {/* Timestamp */}
-        <span
-          className='flex items-center gap-1 text-[10px] text-(--secondary-color)'
-          aria-hidden='true'
-        >
-          <Clock className='h-3 w-3' />
-          {formatTimestamp(entry.timestamp)}
-        </span>
+        <div className='flex min-w-0 flex-col'>
+          <span
+            className='font-japanese truncate text-lg font-bold text-(--main-color) opacity-60 transition-opacity group-hover:opacity-100'
+            lang='ja'
+          >
+            {entry.verb}
+          </span>
+          <div className='flex items-center gap-2'>
+            <span className='text-[8px] font-bold text-(--secondary-color)/40 uppercase'>
+              {typeInfo.label}
+            </span>
+          </div>
+        </div>
       </button>
 
-      {/* Delete button */}
-      <button
-        onClick={e => {
-          e.stopPropagation();
-          onDelete(entry.id);
-        }}
-        className={cn(
-          'flex h-full items-center justify-center px-2 py-2',
-          'text-(--secondary-color)',
-          'hover:bg-red-500/10 hover:text-red-500',
-          'opacity-0 group-hover:opacity-100 focus:opacity-100',
-          'transition-all duration-150',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-inset',
-        )}
-        aria-label={`Remove ${entry.verb} from history`}
-        tabIndex={0}
-      >
-        <X className='h-3.5 w-3.5' aria-hidden='true' />
-      </button>
+      {/* Action Area - Subtle Trash */}
+      <div className='flex items-center pb-4 opacity-0 transition-all duration-500 group-hover:opacity-100'>
+        <button
+          onClick={e => {
+            e.stopPropagation();
+            onDelete(entry.id);
+          }}
+          className='flex h-8 w-8 items-center justify-center rounded-full text-red-500/30 transition-all hover:bg-red-500/10 hover:text-red-500'
+          aria-label={`Remove ${entry.verb}`}
+        >
+          <X className='h-3 w-3' aria-hidden='true' />
+        </button>
+      </div>
     </div>
   );
 }

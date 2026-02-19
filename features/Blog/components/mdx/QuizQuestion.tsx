@@ -5,11 +5,11 @@ import { cn } from '@/shared/lib/utils';
 
 interface QuizQuestionProps {
   /** The question text to display */
-  question: string;
+  question?: string;
   /** Array of answer options */
-  options: string[];
+  options?: string[];
   /** Index of the correct answer (0-based) */
-  answer: number;
+  answer?: number;
   /** Optional explanation shown after answering */
   explanation?: string;
   /** Additional CSS classes */
@@ -35,6 +35,21 @@ export function QuizQuestion({
   explanation,
   className,
 }: QuizQuestionProps) {
+  const normalizedOptions = Array.isArray(options)
+    ? options.filter(option => typeof option === 'string')
+    : [];
+  const normalizedQuestion =
+    typeof question === 'string' && question.trim().length > 0
+      ? question
+      : 'Choose the best answer.';
+  const normalizedAnswer =
+    typeof answer === 'number' &&
+    Number.isInteger(answer) &&
+    answer >= 0 &&
+    answer < normalizedOptions.length
+      ? answer
+      : -1;
+
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
 
@@ -47,18 +62,18 @@ export function QuizQuestion({
     [hasAnswered],
   );
 
-  const isCorrect = selectedIndex === answer;
+  const isCorrect = normalizedAnswer >= 0 && selectedIndex === normalizedAnswer;
 
   const getOptionStyles = (index: number) => {
     if (!hasAnswered) {
       return 'border-(--border-color) bg-(--card-color) hover:border-(--main-color) cursor-pointer';
     }
 
-    if (index === answer) {
+    if (index === normalizedAnswer) {
       return 'border-green-500 bg-green-500/10 text-green-400';
     }
 
-    if (index === selectedIndex && index !== answer) {
+    if (index === selectedIndex && index !== normalizedAnswer) {
       return 'border-red-500 bg-red-500/10 text-red-400';
     }
 
@@ -78,14 +93,19 @@ export function QuizQuestion({
         className='mb-4 text-lg font-medium text-(--main-color)'
         data-testid='quiz-question-text'
       >
-        {question}
+        {normalizedQuestion}
       </p>
 
       {/* Options */}
       <div className='space-y-2' data-testid='quiz-options'>
-        {options.map((option, index) => (
+        {normalizedOptions.length === 0 ? (
+          <p className='text-sm text-(--secondary-color) opacity-80'>
+            Quiz options are unavailable for this question.
+          </p>
+        ) : (
+          normalizedOptions.map((option, index) => (
           <button
-            key={index}
+            key={`${option}-${index}`}
             onClick={() => handleOptionClick(index)}
             disabled={hasAnswered}
             className={cn(
@@ -95,13 +115,13 @@ export function QuizQuestion({
             data-testid='quiz-option'
             data-index={index}
             data-selected={selectedIndex === index}
-            data-correct={index === answer}
+            data-correct={index === normalizedAnswer}
             aria-pressed={selectedIndex === index}
           >
             <span
               className={cn(
                 'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-sm font-medium',
-                hasAnswered && index === answer
+                hasAnswered && index === normalizedAnswer
                   ? 'border-green-500 bg-green-500/20 text-green-400'
                   : hasAnswered && index === selectedIndex
                     ? 'border-red-500 bg-red-500/20 text-red-400'
@@ -112,11 +132,12 @@ export function QuizQuestion({
             </span>
             <span data-testid='quiz-option-text'>{option}</span>
           </button>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Feedback */}
-      {hasAnswered && (
+      {hasAnswered && normalizedOptions.length > 0 && (
         <div
           className={cn(
             'mt-4 rounded-lg p-3',
@@ -130,7 +151,7 @@ export function QuizQuestion({
           <p className='font-medium' data-testid='quiz-feedback-text'>
             {isCorrect ? '✓ Correct!' : '✗ Incorrect'}
           </p>
-          {explanation && (
+          {typeof explanation === 'string' && explanation.trim().length > 0 && (
             <p
               className='mt-1 text-sm text-(--main-color)'
               data-testid='quiz-explanation'

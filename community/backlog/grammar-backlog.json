@@ -314,50 +314,50 @@
   {
     "id": 53,
     "text": "\"ã€œã›ã„ã§\" indicates a negative cause, \"because of\".",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
     "id": 54,
     "text": "\"ã€œã»ã©\" can express degree, like \"so... that\".",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
     "id": 55,
     "text": "\"ã€œã°ã€œã»ã©\" means \"the more... the more...\".",
     "completed": false,
-    "issued": false
+    "issued": true
   },
   {
     "id": 56,
     "text": "\"ã€œã«é•ã„ãªã„\" expresses strong conviction: \"must be\".",
     "completed": false,
-    "issued": false
+    "issued": true
   },
   {
     "id": 57,
     "text": "\"ã€œã‚ã‘ãŒãªã„\" means \"there is no way that...\".",
     "completed": false,
-    "issued": false
+    "issued": true
   },
   {
     "id": 58,
     "text": "\"ã€œã‚ˆã†ã«ã™ã‚‹\" means \"make an effort to...\".",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
     "id": 59,
     "text": "\"ã€œã¦ã—ã¾ã†\" can express completion or regret (\"end up doing\").",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
     "id": 60,
     "text": "\"ã€œã«ã—ã¦ã¯\" means \"considering...\".",
     "completed": false,
-    "issued": false
+    "issued": true
   },
   {
     "id": 61,

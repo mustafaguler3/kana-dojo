@@ -23,29 +23,30 @@ const categoryLabels: Record<Category, string> = {
 };
 
 /**
- * Category badge color mappings
+ * Category badge color mappings (inverted: solid color bg, --background-color text)
  */
 const categoryColors: Record<Category, string> = {
   hiragana:
-    'bg-pink-500/20 text-pink-400 border-pink-500/30 hover:bg-pink-500/30',
+    'bg-pink-400 text-(--background-color) border-pink-400 hover:bg-pink-500',
   katakana:
-    'bg-purple-500/20 text-purple-400 border-purple-500/30 hover:bg-purple-500/30',
-  kanji: 'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30',
+    'bg-purple-400 text-(--background-color) border-purple-400 hover:bg-purple-500',
+  kanji:
+    'bg-blue-400 text-(--background-color) border-blue-400 hover:bg-blue-500',
   vocabulary:
-    'bg-green-500/20 text-green-400 border-green-500/30 hover:bg-green-500/30',
+    'bg-green-400 text-(--background-color) border-green-400 hover:bg-green-500',
   grammar:
-    'bg-yellow-500/20 text-yellow-400 border-yellow-500/30 hover:bg-yellow-500/30',
+    'bg-yellow-400 text-(--background-color) border-yellow-400 hover:bg-yellow-500',
   culture:
-    'bg-orange-500/20 text-orange-400 border-orange-500/30 hover:bg-orange-500/30',
+    'bg-orange-400 text-(--background-color) border-orange-400 hover:bg-orange-500',
   comparison:
-    'bg-cyan-500/20 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/30',
+    'bg-cyan-400 text-(--background-color) border-cyan-400 hover:bg-cyan-500',
   tutorial:
-    'bg-indigo-500/20 text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/30',
+    'bg-indigo-400 text-(--background-color) border-indigo-400 hover:bg-indigo-500',
   resources:
-    'bg-teal-500/20 text-teal-400 border-teal-500/30 hover:bg-teal-500/30',
+    'bg-teal-400 text-(--background-color) border-teal-400 hover:bg-teal-500',
   'study-tips':
-    'bg-lime-500/20 text-lime-400 border-lime-500/30 hover:bg-lime-500/30',
-  jlpt: 'bg-red-500/20 text-red-400 border-red-500/30 hover:bg-red-500/30',
+    'bg-lime-400 text-(--background-color) border-lime-400 hover:bg-lime-500',
+  jlpt: 'bg-red-400 text-(--background-color) border-red-400 hover:bg-red-500',
 };
 
 interface CategoryFilterProps {
@@ -97,19 +98,9 @@ export function CategoryFilter({
           onClick={() => onCategoryChange(category)}
           className={cn(
             'inline-flex cursor-pointer items-center rounded-full border px-3 py-1.5 text-sm font-medium capitalize transition-all duration-200',
-            selectedCategory === category
-              ? cn(
-                  categoryColors[category],
-                  'ring-2 ring-offset-2 ring-offset-(--background-color)',
-                )
-              : cn(
-                  'border-(--border-color) bg-transparent text-(--secondary-color)',
-                  categoryColors[category]
-                    .split(' ')
-                    .slice(0, 2)
-                    .join(' ')
-                    .replace('bg-', 'hover:bg-'),
-                ),
+            categoryColors[category],
+            selectedCategory === category &&
+              'ring-2 ring-offset-2 ring-offset-(--background-color)',
           )}
           aria-pressed={selectedCategory === category}
           data-testid={`category-filter-${category}`}

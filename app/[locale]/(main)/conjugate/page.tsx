@@ -91,10 +91,10 @@ export default async function ConjugatePage({
       <StructuredData data={structuredData} />
       <BreadcrumbSchema
         items={[
-          { name: 'Home', url: `https://kanadojo.com/${locale}` },
+          { name: 'Home', url: 'https://kanadojo.com' },
           {
             name: 'Verb Conjugator',
-            url: `https://kanadojo.com/${locale}/conjugate`,
+            url: 'https://kanadojo.com/conjugate',
           },
         ]}
       />
@@ -128,17 +128,17 @@ export default async function ConjugatePage({
           </Suspense>
 
           {/* SEO Content Section - Educational content for search engines */}
-          <section className='mx-auto mt-12 max-w-4xl px-4'>
+          <section className='mt-40'>
             <SEOContent />
           </section>
 
           {/* FAQ Section */}
-          <section className='mx-auto mt-12 max-w-4xl px-4'>
+          <section className='mt-40'>
             <FAQ />
           </section>
 
           {/* Related Features - Internal Links */}
-          <section className='mx-auto mt-12 max-w-4xl px-4 pb-12'>
+          <section className='mt-40 pb-40'>
             <RelatedFeatures />
           </section>
         </article>

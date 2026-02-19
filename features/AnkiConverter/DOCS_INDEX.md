@@ -16,7 +16,7 @@ Complete documentation for the Anki Converter feature.
 **Web Interface:**
 
 1. Read [README.md](./README.md#web-interface) for web usage
-2. Navigate to `/tools/anki-converter` in the app
+2. Navigate to `/anki-converter` in the app
 3. Drag and drop your file
 
 **Command Line:**
@@ -173,3 +173,4 @@ See [README.md#contributing](./README.md#contributing) for contribution guidelin
 ---
 
 **Last Updated**: January 2025
+
